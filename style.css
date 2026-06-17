@@ -32,7 +32,6 @@ html {
 }
 
 body {
-    background:
     background-color: var(--bg-primary);
     background-size: 1.25rem 1.25rem; 
     color: var(--text-primary);
