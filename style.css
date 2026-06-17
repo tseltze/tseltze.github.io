@@ -33,12 +33,6 @@ html {
 
 body {
     background:
-    linear-gradient(27deg, #151515 0.313rem, transparent 0.313rem) 0 0.313rem,
-    linear-gradient(207deg, #151515 0.313rem, transparent 0.313rem) 0.625rem 0px,
-    linear-gradient(27deg, #222 0.313rem, transparent 0.313rem) 0px 0.625rem,
-    linear-gradient(207deg, #222 0.313rem, transparent 0.313rem) 0.625rem 0.313rem,
-    linear-gradient(90deg, #1b1b1b 0.625rem, transparent 0.625rem),
-    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
     background-color: var(--bg-primary);
     background-size: 1.25rem 1.25rem; 
     color: var(--text-primary);
@@ -424,61 +418,6 @@ footer {
     border-top: 0.063rem solid var(--bg-primary);
 }
 
-/* ANIMATIONS */
-@keyframes textease {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-#text-ease-in {
-    animation-fill-mode: forwards;
-    animation: textease 2s ease-in 1s forwards;;
-}
-
-@keyframes texteaseout {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-#text-ease-in-out {
-    animation-fill-mode: forwards;
-    animation: texteaseout 2s ease-in-out 1s forwards;
-}
-
-@keyframes grow-progress {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-#progress {
-  position: fixed;
-  left: 0; top: 0;
-  width: 100%; height: 1em;
-  background: var(--accent);
-
-  transform-origin: 0 50%;
-  animation: grow-progress auto linear;
-  animation-timeline: scroll();
-}
-
 /* MEDIA QUERIES */
 @media (max-width: 48rem) {
     #home {
@@ -504,10 +443,6 @@ footer {
         grid-template-columns: 1fr;
     }
 }
-
-@media only screen and (max-width: 30rem), only screen and (max-device-width: 30rem) {
-
-    }
 
 
 
