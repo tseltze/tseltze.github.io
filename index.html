@@ -13,7 +13,7 @@
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
+        <!-- <a href="#projects">Projects</a> -->
         <a href="#certificates">Certificates</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -202,25 +202,33 @@
 
         </div>
     </section>
-    <section id="projects">
+    <!-- <section id="projects">
         <h2>Featured Projects</h2>
         <h3>Selected projects shaped for scale, polish, and business outcomes.</h3>
-    </section>
+    </section> -->
     <section id="certificates">
         <h2>Certifications</h2>
         <h3>Verified engineering credentials.</h3>
-        <h5>Certifications across frontend engineering, software engineering fundamentals, JavaScript, SQL, Node.js, Python, algorithms, and problem solving.</h5>
+        <p>Certifications across frontend engineering, software engineering fundamentals, JavaScript, SQL, Node.js, Python, algorithms, and problem solving.</p>
+        <div class="cert-images">
+            <img src="WGU Certificate Front-End Developer.png" alt="Front-End Developer certificate" title="Front-End Developer certificate">
+            <img src="WGU Certificate Back-End Developer.png" alt="Back-End Developer certificate" title="Back-End Developer certificate">
+        </div>
         <h2>Education</h2>
         <h3>Academic Foundation.</h3>
-        <h5>Formal software engineering training paired with a decade of production systems administration.</h5>
+        <p>Formal software engineering training paired with a decade of production systems administration.</p>
+        <div class="edu-div">
         <div class="edu-card">
             <h3>Western Governors University</h3>
             <span>Apr '23 - Mar '26</span>
-            <p>Bachelor's Degree</p>
+            <h4>Bachelor's Degree</h4>
             <h5>Software Engineering</h5>
+        </div>
         </div>
     </section>
     <section id="contact">
+        <p></p>
+        <p></p>
         <h3>Let's build a product together that feels exceptional.</h3>
         <p>Available for junior engineering, full-stack delivery, and enterprise platform initiatives.</p>
         <div class="contact-links">
@@ -228,8 +236,9 @@
             <a href="https://github.com/yourusername"><button class="btn btn-secondary">GitHub</button></a>
             <a href="/Resume.pdf" download="Resume"><button class="btn btn-outline">Download Resume</button></a> 
         </div>
+        <p></p>
     <div class="contact-card">
-        <form id="contact-form">
+        <form id="contact-form"  action="https://formspree.io/f/mykaqwyw" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input
@@ -269,9 +278,7 @@
                     minlength="20"
                     placeholder="Tell me about your project..."></textarea>
             </div>
-            <button type="submit">
-                Send Message
-            </button>
+            <button type="submit" class="btn btn-outline">Send Message</button>
         </form>
     </div>
 </section>

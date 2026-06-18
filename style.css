@@ -33,7 +33,6 @@ html {
 
 body {
     background: linear-gradient(180deg, #0F172A 0%, #111827 100%);
-   /* background-color: var(--bg-primary); */
     background-size: 1.25rem 1.25rem; 
     color: var(--text-primary);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -128,22 +127,13 @@ header a:hover {
     font-size: 1.2rem;
 }
 
-#home btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: rem;
-    margin-top: 2rem;
-    margin-left: 1rem;
-}
-
-/* ==========================================
-   BUTTONS
-========================================== */
+/* BUTTONS */
 
 .btn-group {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-left: 1rem;
     margin-top: 2rem;
 }
 
@@ -220,6 +210,12 @@ section h2 {
     padding: 4rem;
     margin-top: 8.5rem;
     box-shadow: 0 0.625rem 1.875rem rgba(0,0,0,.25);
+
+}
+
+#about:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: var(--shadow-hover);
 }
 
 #about h2 {
@@ -448,35 +444,87 @@ section h2 {
 }
 
 
-/* SECTION CARDS */
-.card {
+/* EDUCATION CARD */
+
+#certificates > h2 {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+#certificates > h3 {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+#certificates p {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 2rem;
+}
+
+.cert-images {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#certificates img {
+    width: 16rem;
+    height: 16rem;
+    padding: 1rem;
+    margin-bottom: 4.5rem;
+}
+
+.edu-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.edu-card {
+    width: 20.625rem;
+    min-height: 10.5rem; 
     background-color: var(--bg-card);
     border-radius: 1rem;
     padding: 2rem;
     box-shadow: 0 0.625rem 1.25rem var(--shadow);
 }
 
+.edu-card h4 {
+    color:var(--accent)
+}
+
+.edu-card:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: var(--shadow-hover);
+}
+
+
 /* CONTACT SECTION */
 
 #contact {
-    padding: 4rem 10%;
-}
-
-#contact h2, p {
-    text-align: center;
-    color: var(--accent);
-    margin-bottom: 1rem;
+    padding: 3rem 10%;
+    
 }
 
 #contact h3 {
     text-align: center;
     color: var(--text-secondary);
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
     font-weight: 400;
 }
 
-#contact links {
+#contact p {
     text-align: center;
+    color: var(--accent);
+    margin-bottom: 2rem;
+}
+
+.contact-links {
+    text-align: center;
+    margin-left: .25rem; 
 }
 
 .contact-card {
