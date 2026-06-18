@@ -466,6 +466,10 @@ section h2 {
     font-weight: 400;
 }
 
+#contact links {
+    text-align: center;
+}
+
 .contact-card {
     max-width: 50rem;
     margin: 0 auto;
