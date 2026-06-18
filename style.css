@@ -32,7 +32,8 @@ html {
 }
 
 body {
-    background-color: var(--bg-primary);
+    background: linear-gradient(180deg, #0F172A 0%, #111827 100%);
+   /* background-color: var(--bg-primary); */
     background-size: 1.25rem 1.25rem; 
     color: var(--text-primary);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
