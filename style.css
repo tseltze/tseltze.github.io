@@ -461,16 +461,11 @@ section h2 {
 .form-group input,
 .form-group textarea {
     background: rgba(255,255,255,.05);
-
     border: 2px solid transparent;
     border-radius: .75rem;
-
     padding: 1rem;
-
     color: var(--text-primary);
-
     font-size: 1rem;
-
     transition: .3s ease;
 }
 
@@ -500,7 +495,7 @@ section h2 {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    justify-content: center;
+    align-self: center;
 }
 
 #contact button:hover {
