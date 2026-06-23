@@ -110,40 +110,6 @@ if (typeEl) {
 }
 
 // =====================
-// NUMBER COUNTERS
-// =====================
-var counterCards = Array.prototype.slice.call(document.querySelectorAll('.highlight-card'));
-if (counterCards.length && 'IntersectionObserver' in window) {
-    var countObs = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-            if (!entries[i].isIntersecting) continue;
-            var card = entries[i].target;
-            var h3 = card.querySelector('h3[data-count]');
-            if (h3) {
-                var finalVal = parseInt(h3.getAttribute('data-count'), 10);
-                var sfx = h3.getAttribute('data-suffix') || '';
-                if (prefersReducedMotion) {
-                    h3.textContent = finalVal + sfx;
-                } else {
-                    (function (el, end, suffix) {
-                        var startTime = performance.now();
-                        var dur = 1400;
-                        function step(now) {
-                            var p = Math.min((now - startTime) / dur, 1);
-                            el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * end) + suffix;
-                            if (p < 1) requestAnimationFrame(step);
-                        }
-                        requestAnimationFrame(step);
-                    }(h3, finalVal, sfx));
-                }
-            }
-            countObs.unobserve(card);
-        }
-    }, { threshold: 0.5 });
-    counterCards.forEach(function (card) { countObs.observe(card); });
-}
-
-// =====================
 // BACK TO TOP
 // =====================
 var backBtn = document.createElement('button');
@@ -163,7 +129,7 @@ backBtn.addEventListener('click', function () {
 // =====================
 // CURSOR SPOTLIGHT
 // =====================
-if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
+if (!window.matchMedia('(pointer: coarse)').matches) {
     var spotlight = document.createElement('div');
     spotlight.id = 'cursor-spotlight';
     document.body.appendChild(spotlight);
@@ -176,7 +142,7 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
 // =====================
 // HERO CANVAS PARTICLES
 // =====================
-if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
+if (!window.matchMedia('(pointer: coarse)').matches) {
     var heroCanvas = document.getElementById('hero-canvas');
     if (heroCanvas) {
         var pctx = heroCanvas.getContext('2d');
@@ -239,25 +205,6 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
         }
     }
 }
-
-// =====================
-// KEYWORD RIPPLE
-// =====================
-var keySpans = Array.prototype.slice.call(document.querySelectorAll('.keyword span'));
-keySpans.forEach(function (span) {
-    span.addEventListener('click', function (e) {
-        var rip  = document.createElement('span');
-        rip.className = 'ripple-effect';
-        var rect = span.getBoundingClientRect();
-        var size = Math.max(rect.width, rect.height);
-        rip.style.width  = size + 'px';
-        rip.style.height = size + 'px';
-        rip.style.left   = (e.clientX - rect.left - size / 2) + 'px';
-        rip.style.top    = (e.clientY - rect.top  - size / 2) + 'px';
-        span.appendChild(rip);
-        rip.addEventListener('animationend', function () { rip.remove(); });
-    });
-});
 
 // =====================
 // COPY EMAIL
