@@ -198,7 +198,7 @@ header {
 }
 
 .logo img {
-    height: 2rem;
+    height: 2.75rem;
     width: auto;
     display: block;
     transition: transform 0.3s ease;
@@ -982,7 +982,7 @@ footer {
     }
 
     .logo img {
-        height: 1.6rem;
+        height: 2.25rem;
     }
 
     .dot-nav {
