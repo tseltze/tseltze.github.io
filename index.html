@@ -18,6 +18,18 @@
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
         <link rel="preload" as="image" href="terina.jpg">
         <link rel="stylesheet" href="style.css" type="text/css">
+
+        <!-- Set theme before first paint to avoid a flash of the wrong theme -->
+        <script>
+            (function () {
+                var saved;
+                try { saved = localStorage.getItem('theme'); } catch (e) {}
+                var light = saved
+                    ? saved === 'light'
+                    : window.matchMedia('(prefers-color-scheme: light)').matches;
+                document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark');
+            }());
+        </script>
     </head>
 <body>
 
@@ -35,6 +47,7 @@
             <a href="#education">Education</a>
             <a href="#contact">Contact</a>
         </nav>
+        <button id="theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle light/dark mode">🌙</button>
         <div id="progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
     </header>
 
@@ -177,9 +190,10 @@
                 <p>Freelance</p>
                 <h4 class="impact-label">Impact</h4>
                 <ol>
-                    <li>Designed and developed a full-stack pet adoption application featuring an integrated volunteer recruitment module, enabling seamless user registration, pet browsing, and volunteer onboarding within a single platform</li>
-                    <li>Orchestrated the end-to-end development of a task management application, overseeing architecture decisions and implementation of core features including task creation, assignment, and progress tracking</li>
-                    <li>Built a functional Java-based calculator application, implementing arithmetic logic and a user-friendly interface following object-oriented programming principles</li>
+                    <!-- TODO: replace with real accomplishments -->
+                    <li>Lorem ipsum dolor sit amet.</li>
+                    <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est, dolores?</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
                 </ol>
             </div>
             <div class="jobs-card reveal">
@@ -188,9 +202,9 @@
                 <p>Student</p>
                 <h4 class="impact-label">Impact</h4>
                 <ol>
-                    <li>Earned a Bachelor of Science in Software Engineering with a concentrated focus on full-stack application development and database systems, gaining a strong academic foundation in software design, system architecture, and engineering best practices</li>
-                    <li>Engineered multiple end-to-end software projects leveraging Java, Python, and SQL, applying advanced object-oriented programming principles — including inheritance, encapsulation, and polymorphism — to build scalable, maintainable, and efficient applications</li>
-                    <li>Architected and implemented production-quality relational databases using MySQL, designing normalized schemas and developing complex queries, stored procedures, and triggers to ensure data integrity, optimize performance, and support dynamic application functionality</li>
+                    <li>Completed Bachelor of Science in Software Engineering with a focus on application development and database systems</li>
+                    <li>Built multiple projects using Java, Python, and SQL, applying object-oriented programming principles (inheritance, encapsulation, polymorphism)</li>
+                    <li>Designed and implemented relational databases using MySQL, including queries, stored procedures, and triggers</li>
                 </ol>
             </div>
             <div class="jobs-card reveal">
@@ -199,9 +213,9 @@
                 <p>Career Break</p>
                 <h4 class="impact-label">Impact</h4>
                 <ol>
-                    <li>Orchestrated complex, multi-faceted care schedules encompassing medical appointments, therapy sessions, and educational planning, ensuring seamless coordination across all areas to consistently meet individualized needs and long-term development goals</li>
-                    <li>Cultivated and maintained strategic relationships with healthcare providers, therapists, and educators to collaboratively design and execute personalized care plans, resulting in a cohesive support system that maximized outcomes and quality of life</li>
-                    <li>Thrived in a high-responsibility caregiving environment that demanded exceptional problem-solving, meticulous organization, and clear communication, consistently adapting to dynamic and time-sensitive challenges while maintaining a high standard of care</li>
+                    <li>Managed complex schedules involving medical care, therapy coordination, and educational planning.</li>
+                    <li>Collaborated with healthcare providers, therapists, and educators to implement individualized plans</li>
+                    <li>Strengthened problem-solving, organization, and communication skills in high-responsibility environments</li>
                 </ol>
             </div>
             <div class="jobs-card reveal">
@@ -210,9 +224,9 @@
                 <p>VTLS Inc</p>
                 <h4 class="impact-label">Impact</h4>
                 <ol>
-                    <li>Architected and maintained a robust enterprise network infrastructure encompassing servers, routers, and switches, optimizing configurations to achieve maximum uptime, scalability, and seamless connectivity across the organization</li>
-                    <li>Executed comprehensive system lifecycle management for Windows and Linux server environments, including proactive patch deployment, performance tuning, and scheduled maintenance to eliminate vulnerabilities and ensure operational continuity</li>
-                    <li>Served as the primary escalation point for complex technical issues, systematically diagnosing and resolving critical hardware, software, and network failures while reducing average resolution time and improving end-user productivity across the organization</li>
+                    <li>Administered and maintained network infrastructure, including servers, routers, and switches.</li>
+                    <li>Performed system maintenance, updates, and patches on Windows and Linux servers</li>
+                    <li>Provided technical support, diagnosing and resolving hardware, software, and network issues</li>
                 </ol>
             </div>
             <div class="jobs-card reveal">
@@ -221,9 +235,10 @@
                 <p>US Air Force</p>
                 <h4 class="impact-label">Impact</h4>
                 <ol>
-                    <li>Administered and maintained enterprise network infrastructure, configuring and managing routers, switches, firewalls, and VPNs to ensure high availability, optimal performance, and security compliance across multi-site environments</li>
-                    <li>Monitored, diagnosed, and resolved complex system and network issues by leveraging industry-standard tools to perform real-time traffic analysis, patch management, and vulnerability assessments, reducing downtime and strengthening overall system resilience</li>
-                    <li>Supported classified network environments as an active TS/SCI clearance holder, ensuring strict adherence to DoD security protocols, NIST frameworks, and access control policies to safeguard sensitive data and mission-critical systems</li>
+                    <!-- TODO: replace with real accomplishments -->
+                    <li>Lorem ipsum dolor sit amet.</li>
+                    <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est, dolores?</li>
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
                 </ol>
             </div>
         </div>

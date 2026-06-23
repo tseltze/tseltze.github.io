@@ -48,6 +48,32 @@ textarea {
     --shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.25);
     --shadow-dark: rgba(0, 0, 0, 0.5);
     --shadow-hover: 0 0.938rem 2.188rem var(--accent-focus);
+
+    /* Dot-grid color (theme-aware) */
+    --dot-color: rgba(51, 65, 85, 0.35);
+}
+
+/* LIGHT THEME */
+:root[data-theme="light"] {
+    --bg-primary: #F1F5F9;
+    --bg-secondary: #E2E8F0;
+    --bg-card: #FFFFFF;
+    --bg-border: #CBD5E1;
+    --bg-header: rgba(241, 245, 249, 0.85);
+    --bg-input: rgba(15, 23, 42, 0.04);
+
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+
+    --accent: #2563EB;
+    --accent-dark: #1D4ED8;
+    --accent-light: #1E40AF;
+
+    --shadow: 0 0.625rem 1.875rem rgba(15, 23, 42, 0.12);
+    --shadow-dark: rgba(15, 23, 42, 0.18);
+
+    --dot-color: rgba(100, 116, 139, 0.25);
 }
 
 /* GLOBAL */
@@ -58,12 +84,13 @@ html {
 body {
     background-color: var(--bg-primary);
     background-image:
-        radial-gradient(circle, rgba(51, 65, 85, 0.35) 1px, transparent 1px),
+        radial-gradient(circle, var(--dot-color) 1px, transparent 1px),
         linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     background-size: 1.5rem 1.5rem, auto;
     color: var(--text-primary);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ACCESSIBILITY */
@@ -179,6 +206,29 @@ header a:hover,
 header a.active {
     color: var(--accent);
     border-bottom-color: var(--accent);
+}
+
+/* THEME TOGGLE */
+#theme-toggle {
+    margin-left: 1.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 0.063rem solid var(--bg-border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+#theme-toggle:hover {
+    border-color: var(--accent);
+    transform: translateY(-0.125rem);
 }
 
 /* =====================
@@ -912,9 +962,9 @@ footer {
 
 /* Respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *:not(.ripple-effect),
+    *:not(.ripple-effect)::before,
+    *:not(.ripple-effect)::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }

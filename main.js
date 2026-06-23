@@ -17,6 +17,31 @@ if (progressBar) {
 }
 
 // =====================
+// THEME TOGGLE
+// =====================
+var themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    function applyTheme(theme) {
+        var isLight = theme === 'light';
+        document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
+        themeToggle.textContent = isLight ? '☀️' : '🌙';
+        themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+
+    // Use saved choice, else fall back to OS preference
+    var savedTheme = null;
+    try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
+    var systemLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(savedTheme || (systemLight ? 'light' : 'dark'));
+
+    themeToggle.addEventListener('click', function () {
+        var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+}
+
+// =====================
 // REVEAL ON SCROLL
 // =====================
 var revealItems = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
