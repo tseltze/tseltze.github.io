@@ -81,7 +81,7 @@ function initTypewriter() {
         'Java Developer',
         'Problem Solver',
     ];
-    let roleIdx = 0, charIdx = roles[0].length, deleting = true;
+    let roleIdx = 0, charIdx = 0, deleting = false;
     const TYPE_SPEED = 75, DELETE_SPEED = 38, PAUSE = 1800;
 
     function tick() {
@@ -108,7 +108,7 @@ function initTypewriter() {
         }
     }
 
-    setTimeout(tick, PAUSE);
+    tick();
 }
 
 initTypewriter();
