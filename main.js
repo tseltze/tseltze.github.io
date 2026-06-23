@@ -70,48 +70,38 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 // =====================
 // TYPEWRITER HERO
 // =====================
-function initTypewriter() {
+(function initTypewriter() {
     if (prefersReducedMotion) return;
     const el = document.getElementById('typewriter-text');
     if (!el) return;
 
-    const roles = [
-        'Software Developer',
-        'Full Stack Engineer',
-        'Java Developer',
-        'Problem Solver',
-    ];
-    let roleIdx = 0, charIdx = 0, deleting = false;
-    const TYPE_SPEED = 75, DELETE_SPEED = 38, PAUSE = 1800;
+    const roles = ['Software Developer', 'Full Stack Engineer', 'Java Developer', 'Problem Solver'];
+    let roleIdx = 0, isDeleting = false, text = '';
 
-    function tick() {
-        const role = roles[roleIdx];
-        if (deleting) {
-            charIdx--;
-            el.textContent = role.slice(0, charIdx);
-            if (charIdx === 0) {
-                deleting = false;
-                roleIdx = (roleIdx + 1) % roles.length;
-                setTimeout(tick, 300);
-                return;
-            }
-            setTimeout(tick, DELETE_SPEED);
-        } else {
-            charIdx++;
-            el.textContent = roles[roleIdx].slice(0, charIdx);
-            if (charIdx === roles[roleIdx].length) {
-                deleting = true;
-                setTimeout(tick, PAUSE);
-                return;
-            }
-            setTimeout(tick, TYPE_SPEED);
+    function type() {
+        const full = roles[roleIdx];
+        text = isDeleting
+            ? full.substring(0, text.length - 1)
+            : full.substring(0, text.length + 1);
+
+        el.textContent = text;
+
+        let delay = isDeleting ? 38 : 75;
+
+        if (!isDeleting && text === full) {
+            delay = 1800;
+            isDeleting = true;
+        } else if (isDeleting && text === '') {
+            isDeleting = false;
+            roleIdx = (roleIdx + 1) % roles.length;
+            delay = 300;
         }
+
+        setTimeout(type, delay);
     }
 
-    tick();
-}
-
-initTypewriter();
+    type();
+}());
 
 // =====================
 // HERO CANVAS PARTICLES
@@ -224,40 +214,6 @@ const counterObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 document.querySelectorAll('.highlight-card').forEach(card => counterObserver.observe(card));
-
-// =====================
-// CARD TILT
-// =====================
-function initTilt(selector) {
-    if (prefersReducedMotion || isTouchDevice) return;
-
-    document.querySelectorAll(selector).forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'box-shadow 0.3s ease';
-            card.style.transform = 'perspective(700px) translateY(-0.4rem)';
-        });
-
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            card.style.transform =
-                `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateY(-0.4rem)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.45s ease, box-shadow 0.3s ease';
-            card.style.transform = '';
-            setTimeout(() => { card.style.transition = ''; }, 450);
-        });
-    });
-}
-
-initTilt('.skills-card');
-initTilt('.jobs-card');
-initTilt('.highlight-card');
-initTilt('.edu-card');
-initTilt('#about');
 
 // =====================
 // BACK TO TOP
