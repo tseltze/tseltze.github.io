@@ -226,7 +226,7 @@ header a:hover {
 
 /* GENERAL SECTION STYLING */
 section {
-    padding: 6.25rem 10%;
+    padding: 5rem 10%;
     scroll-margin-top: var(--header-height);
 }
 
@@ -240,10 +240,10 @@ section h2 {
 /* ABOUT SECTION */
 #about {
     max-width: 62.5rem;
-    margin: 8.5rem auto 4rem;
+    margin: 0 auto;
     background-color: var(--bg-card);
     border-radius: 1rem;
-    padding: 4rem;
+    padding: 3rem;
     box-shadow: var(--shadow);
     transition: transform .3s ease, box-shadow .3s ease;
 }
@@ -266,7 +266,7 @@ section h2 {
 
 /* HIGHLIGHTS BAR */
 #highlights {
-    padding: 1rem 10% 4rem;
+    padding: 2rem 10%;
     scroll-margin-top: var(--header-height);
 }
 
@@ -314,8 +314,7 @@ section h2 {
 
 /* SKILLS SECTION */
 #skills {
-    padding: 1rem 10% 4rem;
-    margin-top: 2rem;
+    padding: 5rem 10%;
 }
 
 #skills h4,
@@ -385,7 +384,7 @@ section h2 {
 /* EXPERIENCE */
 
 #experience {
-    padding: 4rem 10%;
+    padding: 5rem 10%;
 }
 
 #experience > h2 {
@@ -471,6 +470,7 @@ section h2 {
     text-align: center;
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 #certificates > p,
@@ -478,6 +478,10 @@ section h2 {
     text-align: center;
     color: var(--text-muted);
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .cert-images {
@@ -544,7 +548,7 @@ section h2 {
 /* CONTACT SECTION */
 
 #contact {
-    padding: 3rem 10%;
+    padding: 5rem 10%;
 }
 
 #contact h2 {
