@@ -1,4 +1,4 @@
-/* RESET */
+/* RESET: normalize default spacing and sizing across browsers */
 * {
     margin: 0;
     padding: 0;
@@ -11,10 +11,11 @@ textarea {
     font-family: inherit;
 }
 
-/* VARIABLES */
+/* DESIGN TOKENS: shared layout, color, and effect values */
 :root {
     /* Layout */
     --header-height: 4.375rem;
+    --user-font-size: 16px;
 
     /* Backgrounds */
     --bg-primary: #0F172A;
@@ -29,7 +30,7 @@ textarea {
     --text-secondary: #CBD5E1;
     --text-muted: #94A3B8;
 
-    /* Accent — tuned to logo (slate-blue → teal) */
+    /* Accent colors tuned to the logo palette */
     --accent: #5B8DB8;
     --accent-dark: #4A7BA0;
     --accent-light: #7EC8C8;
@@ -53,7 +54,7 @@ textarea {
     --dot-color: rgba(51, 65, 85, 0.35);
 }
 
-/* LIGHT THEME */
+/* LIGHT THEME: overrides applied when data-theme="light" is set */
 :root[data-theme="light"] {
     --bg-primary: #F1F5F9;
     --bg-secondary: #E2E8F0;
@@ -76,8 +77,9 @@ textarea {
     --dot-color: rgba(100, 116, 139, 0.25);
 }
 
-/* GLOBAL */
+/* GLOBAL: page-wide typography, background, and base behavior */
 html {
+    font-size: 16px;
     scroll-behavior: smooth;
 }
 
@@ -93,7 +95,8 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ACCESSIBILITY */
+
+/* ACCESSIBILITY: keyboard skip link and focus-friendly helpers */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -112,10 +115,26 @@ body {
     top: 0;
 }
 
-/* SCROLL PROGRESS BAR */
+:focus-visible {
+    outline: 0.2rem solid var(--accent-light);
+    outline-offset: 0.2rem;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* SCROLL PROGRESS BAR: fixed indicator updated by main.js */
 #progress {
-    position: fixed;
-    top: var(--header-height);
+    position: absolute;
+    bottom: 0;
     left: 0;
     width: 0%;
     height: 3px;
@@ -124,7 +143,7 @@ body {
     transition: width 0.1s linear;
 }
 
-/* COPY TOAST */
+/* COPY TOAST: temporary feedback after copying the email address */
 #copy-toast {
     position: fixed;
     bottom: 2rem;
@@ -148,7 +167,7 @@ body {
     transform: translateX(-50%) translateY(0);
 }
 
-/* REVEAL ANIMATIONS */
+/* REVEAL ANIMATIONS: scroll-triggered entrance states */
 .reveal {
     opacity: 0;
     transform: translateY(1.5rem);
@@ -160,7 +179,7 @@ body {
     transform: translateY(0);
 }
 
-/* Stagger cards within grids */
+/* Stagger reveal timing for card grids */
 .skills-grid .reveal:nth-child(2) { transition-delay: 0.08s; }
 .skills-grid .reveal:nth-child(3) { transition-delay: 0.16s; }
 .skills-grid .reveal:nth-child(4) { transition-delay: 0.24s; }
@@ -172,7 +191,7 @@ body {
 .highlights-grid .reveal:nth-child(3) { transition-delay: 0.16s; }
 .highlights-grid .reveal:nth-child(4) { transition-delay: 0.24s; }
 
-/* HEADER */
+/* HEADER: fixed top navigation bar */
 header {
     position: fixed;
     top: 0;
@@ -189,7 +208,7 @@ header {
     z-index: 1000;
 }
 
-/* LOGO */
+/* LOGO: brand mark sizing and hover behavior */
 .logo {
     display: inline-flex;
     align-items: center;
@@ -208,7 +227,7 @@ header {
     transform: translateY(-0.125rem) scale(1.03);
 }
 
-nav {
+header nav {
     display: flex;
     gap: 2rem;
 }
@@ -229,9 +248,8 @@ header a.active {
     border-bottom-color: var(--accent);
 }
 
-/* THEME TOGGLE */
+/* THEME TOGGLE: dark/light mode button */
 #theme-toggle {
-    margin-left: 1.5rem;
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 50%;
@@ -252,6 +270,50 @@ header a.active {
     transform: translateY(-0.125rem);
 }
 
+.header-controls {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: 0 1 auto;
+    margin-left: auto;
+    min-width: 0;
+}
+
+/* TEXT SIZE CONTROL: fixed-size header slider for readable content scaling */
+.control-panel {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 1 230px;
+    max-width: 230px;
+    min-width: 0;
+    gap: 7px;
+    margin-left: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.control-panel label,
+.control-panel span {
+    flex: 0 0 auto;
+    color: inherit;
+    font: inherit;
+}
+
+.control-panel input[type="range"] {
+    flex: 1 1 90px;
+    width: 90px;
+    min-width: 70px;
+    max-width: 110px;
+}
+
+#sizeValue {
+    width: 34px;
+    text-align: right;
+}
 /* =====================
    GENERAL SECTION RULES
    ===================== */
@@ -260,7 +322,7 @@ section {
     scroll-margin-top: var(--header-height);
 }
 
-/* Shared section intro block */
+/* Shared section intro block used by major content sections */
 .section-intro {
     text-align: center;
     max-width: 50rem;
@@ -362,7 +424,7 @@ section {
     font-size: 1.2rem;
 }
 
-/* TYPEWRITER CURSOR */
+/* TYPEWRITER CURSOR: visual caret for animated role text */
 .typewriter-cursor {
     display: inline-block;
     color: var(--accent);
@@ -580,7 +642,7 @@ section {
     transform: translateY(-0.125rem);
 }
 
-/* Keyword badge ripple */
+/* Keyword badge ripple effect injected by main.js */
 .ripple-effect {
     position: absolute;
     border-radius: 50%;
@@ -749,7 +811,7 @@ section {
     box-shadow: var(--shadow);
 }
 
-/* FORM FEEDBACK */
+/* FORM FEEDBACK: success and error states for contact submission */
 .form-feedback {
     border-radius: 0.75rem;
     padding: 1rem;
@@ -948,6 +1010,34 @@ footer {
 /* =============
    MEDIA QUERIES
    ============= */
+@media (max-width: 56rem) {
+    .header-controls {
+        margin-left: 0;
+    }
+
+    header {
+        justify-content: center;
+        gap: 0.75rem;
+        height: auto;
+        min-height: var(--header-height);
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    header nav {
+        flex: 1 1 100%;
+        order: 3;
+    }
+
+    #theme-toggle {
+        margin-left: 0;
+    }
+
+    .control-panel {
+        flex: 0 1 220px;
+        max-width: calc(100vw - 5rem);
+    }
+}
 @media (max-width: 48rem) {
     #home {
         flex-direction: column;
@@ -969,7 +1059,7 @@ footer {
         width: 100%;
     }
 
-    nav {
+    header nav {
         gap: 0.75rem;
         flex-wrap: wrap;
         justify-content: center;
@@ -990,7 +1080,35 @@ footer {
     }
 }
 
-/* Respect reduced-motion preference */
+/* USER TEXT SIZE: late cascade overrides controlled by the header slider */
+section,
+#highlights,
+footer {
+    font-size: var(--user-font-size);
+    transition: font-size 0.2s ease;
+}
+
+.home-content h1 { font-size: calc(var(--user-font-size) * 4); }
+.home-content h2 { font-size: calc(var(--user-font-size) * 2); }
+.home-content p { font-size: calc(var(--user-font-size) * 1.2); }
+.section-intro h2,
+#about h2,
+.highlight-card h3 { font-size: calc(var(--user-font-size) * 2); }
+.section-intro .section-subtitle { font-size: calc(var(--user-font-size) * 1.05); }
+.section-intro .section-desc,
+.skills-card p,
+.jobs-card ol { font-size: calc(var(--user-font-size) * 0.9); }
+.skills-card h3 { font-size: calc(var(--user-font-size) * 1.25); }
+.jobs-card h3,
+.edu-card h3 { font-size: calc(var(--user-font-size) * 1.2); }
+.jobs-card > p,
+.edu-card h4,
+.edu-card p { font-size: calc(var(--user-font-size) * 0.95); }
+.keyword span,
+.card-date,
+.impact-label { font-size: calc(var(--user-font-size) * 0.8); }
+
+/* REDUCED MOTION: keep this last so motion overrides win */
 @media (prefers-reduced-motion: reduce) {
     *:not(.ripple-effect),
     *:not(.ripple-effect)::before,
@@ -1010,28 +1128,5 @@ footer {
 
     #cursor-spotlight {
         display: none;
-    }
-}
-
-/* TEXT SIZE CONTROL */
-.control-panel {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-left: 0.75rem;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
-
-.control-panel input[type="range"] {
-    width: 110px;
-}
-
-@media (max-width: 760px) {
-    .control-panel {
-        width: 100%;
-        justify-content: flex-end;
-        margin-left: 0;
-        margin-top: 0.5rem;
     }
 }

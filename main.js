@@ -1,4 +1,4 @@
-// Script runs at end of <body> — DOM is already parsed and ready.
+// Script is loaded with defer, so the DOM is parsed before it runs.
 
 var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -24,7 +24,7 @@ if (themeToggle) {
     function applyTheme(theme) {
         var isLight = theme === 'light';
         document.documentElement.setAttribute('data-theme', isLight ? 'light' : 'dark');
-        themeToggle.textContent = isLight ? '☀️' : '🌙';
+        themeToggle.textContent = isLight ? '\u2600\uFE0F' : '\uD83C\uDF19';
         themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     }
 
@@ -109,38 +109,42 @@ if (navSections.length && 'IntersectionObserver' in window) {
 var typeEl = document.getElementById('typewriter-text');
 if (typeEl) {
     var roles = ['Software Developer', 'Full Stack Engineer', 'Java Developer', 'Problem Solver'];
-    var roleIdx = 0, isDeleting = false, typedText = '';
 
-    function typeTick() {
-        var full = roles[roleIdx];
-        typedText = isDeleting
-            ? full.substring(0, typedText.length - 1)
-            : full.substring(0, typedText.length + 1);
+    if (prefersReducedMotion) {
+        typeEl.textContent = roles[0];
+    } else {
+        var roleIdx = 0, isDeleting = false, typedText = '';
 
-        typeEl.textContent = typedText;
+        function typeTick() {
+            var full = roles[roleIdx];
+            typedText = isDeleting
+                ? full.substring(0, typedText.length - 1)
+                : full.substring(0, typedText.length + 1);
 
-        var delay = isDeleting ? 38 : 75;
-        if (!isDeleting && typedText === full) {
-            delay = 1800;
-            isDeleting = true;
-        } else if (isDeleting && typedText === '') {
-            isDeleting = false;
-            roleIdx = (roleIdx + 1) % roles.length;
-            delay = 300;
+            typeEl.textContent = typedText;
+
+            var delay = isDeleting ? 38 : 75;
+            if (!isDeleting && typedText === full) {
+                delay = 1800;
+                isDeleting = true;
+            } else if (isDeleting && typedText === '') {
+                isDeleting = false;
+                roleIdx = (roleIdx + 1) % roles.length;
+                delay = 300;
+            }
+            setTimeout(typeTick, delay);
         }
-        setTimeout(typeTick, delay);
+
+        typeTick();
     }
-
-    typeTick();
 }
-
 // =====================
 // BACK TO TOP
 // =====================
 var backBtn = document.createElement('button');
 backBtn.id = 'back-to-top';
 backBtn.setAttribute('aria-label', 'Back to top');
-backBtn.textContent = '↑';
+backBtn.textContent = '\u2191';
 document.body.appendChild(backBtn);
 
 window.addEventListener('scroll', function () {
@@ -148,13 +152,13 @@ window.addEventListener('scroll', function () {
 }, { passive: true });
 
 backBtn.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 });
 
 // =====================
 // CURSOR SPOTLIGHT
 // =====================
-if (!window.matchMedia('(pointer: coarse)').matches) {
+if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
     var spotlight = document.createElement('div');
     spotlight.id = 'cursor-spotlight';
     document.body.appendChild(spotlight);
@@ -167,7 +171,7 @@ if (!window.matchMedia('(pointer: coarse)').matches) {
 // =====================
 // HERO CANVAS PARTICLES
 // =====================
-if (!window.matchMedia('(pointer: coarse)').matches) {
+if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
     var heroCanvas = document.getElementById('hero-canvas');
     if (heroCanvas) {
         var pctx = heroCanvas.getContext('2d');
@@ -265,8 +269,13 @@ if (contactForm && contactFeedback) {
     contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
         var btn = contactForm.querySelector('button[type="submit"]');
+        if (!btn) {
+            contactFeedback.className = 'form-feedback error';
+            contactFeedback.textContent = 'The contact form is missing its submit button. Please email terina.seltzer@gmail.com directly.';
+            return;
+        }
         var orig = btn.textContent;
-        btn.textContent = 'Sending…';
+        btn.textContent = 'Sending...';
         btn.disabled = true;
         contactFeedback.className = 'form-feedback';
 
@@ -278,7 +287,7 @@ if (contactForm && contactFeedback) {
             if (res.ok) {
                 contactForm.reset();
                 contactFeedback.className = 'form-feedback success';
-                contactFeedback.textContent = "Message sent — I'll get back to you soon!";
+                contactFeedback.textContent = "Message sent - I'll get back to you soon!";
             } else {
                 throw new Error('error');
             }
@@ -305,13 +314,31 @@ var sizeSlider = document.getElementById('sizeSlider');
 var sizeValue = document.getElementById('sizeValue');
 
 if (sizeSlider && sizeValue) {
-    function setTextSize(value) {
-        document.documentElement.style.fontSize = value + 'px';
-        sizeValue.textContent = value + 'px';
+    var defaultTextSize = 16;
+    var minTextSize = Number(sizeSlider.min) || 12;
+    var maxTextSize = Number(sizeSlider.max) || 32;
+    var savedTextSize = null;
+    try { savedTextSize = localStorage.getItem('textSize'); } catch (e) {}
+
+    function normalizeTextSize(value) {
+        var parsed = Number(value);
+        if (!Number.isFinite(parsed)) parsed = defaultTextSize;
+        return String(Math.min(maxTextSize, Math.max(minTextSize, parsed)));
     }
 
-    setTextSize(sizeSlider.value);
+    function setTextSize(value) {
+        var normalized = normalizeTextSize(value);
+        document.documentElement.style.setProperty('--user-font-size', normalized + 'px');
+        sizeSlider.value = normalized;
+        sizeValue.textContent = normalized + 'px';
+        sizeSlider.setAttribute('aria-valuenow', normalized);
+        sizeSlider.setAttribute('aria-valuetext', normalized + ' pixels');
+        return normalized;
+    }
+
+    setTextSize(savedTextSize || defaultTextSize);
     sizeSlider.addEventListener('input', function () {
-        setTextSize(sizeSlider.value);
+        var normalized = setTextSize(sizeSlider.value);
+        try { localStorage.setItem('textSize', normalized); } catch (e) {}
     });
 }
