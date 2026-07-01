@@ -38,6 +38,11 @@ Before deployment, make sure these referenced assets are included at the expecte
 - `Resume.docx`
 - `WGU Certificate Front-End Developer.png`
 - `WGU Certificate Back-End Developer.png`
+- `world-map-statistics-preview.png`
+- `west-virginia-website-preview.png`
+- `rocking-horses-inventory-preview.png`
+- `landon-hotel-webpage-preview.png`
+- `shepherd-pet-adoption-preview.png`
 
 Also verify the Formspree endpoint in `index.html` is correct for the production contact form.
 
