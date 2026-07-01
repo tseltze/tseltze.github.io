@@ -297,3 +297,21 @@ if (contactForm && contactFeedback) {
 // =====================
 var yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// =====================
+// TEXT SIZE CONTROL
+// =====================
+var sizeSlider = document.getElementById('sizeSlider');
+var sizeValue = document.getElementById('sizeValue');
+
+if (sizeSlider && sizeValue) {
+    function setTextSize(value) {
+        document.documentElement.style.fontSize = value + 'px';
+        sizeValue.textContent = value + 'px';
+    }
+
+    setTextSize(sizeSlider.value);
+    sizeSlider.addEventListener('input', function () {
+        setTextSize(sizeSlider.value);
+    });
+}
