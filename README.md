@@ -43,6 +43,14 @@ Before deployment, make sure these referenced assets are included at the expecte
 - `rocking-horses-inventory-preview.png`
 - `landon-hotel-webpage-preview.png`
 - `shepherd-pet-adoption-preview.png`
+- `openai-agents-workflows-certificate.png`
+- `openai-applied-ai-foundations-certificate.png`
+- `openai-ai-foundations-certificate.png`
+- `codecademy-learn-javascript-certificate.png`
+- `codecademy-learn-bash-scripting-certificate.png`
+- `codecademy-learn-python-3-certificate.png`
+- `codecademy-learn-kotlin-certificate.png`
+- `codecademy-lean-lua-certificate.png`
 
 Also verify the Formspree endpoint in `index.html` is correct for the production contact form.
 

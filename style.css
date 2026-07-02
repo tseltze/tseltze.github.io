@@ -824,6 +824,70 @@ section {
     gap: 1rem;
 }
 
+
+/* ONLINE LEARNING: compact course badges designed to scale as more items are added */
+.online-learning {
+    max-width: 72rem;
+    margin: 2rem auto 0;
+    text-align: center;
+}
+
+.online-learning h3 {
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.learning-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+}
+
+.learning-badge {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: min(100%, 14rem);
+    margin: 0;
+    isolation: isolate;
+}
+
+.learning-course-label {
+    position: absolute;
+    right: -0.75rem;
+    top: 50%;
+    z-index: 2;
+    width: 5.9rem;
+    min-height: 6.75rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 0.55rem 0.75rem 1.1rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--text-primary);
+    border: 0.063rem solid rgba(255, 255, 255, 0.24);
+    border-radius: 0 999rem 999rem 0;
+    box-shadow: var(--shadow);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: left;
+}
+
+#certificates .learning-badge img {
+    position: relative;
+    z-index: 1;
+    width: 10.5rem;
+    height: 10.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 0.18rem solid var(--bg-border);
+    box-shadow: var(--shadow), 0 0 0 0.45rem var(--bg-card);
+}
 #certificates img {
     width: clamp(10rem, 20vw, 16rem);
     height: auto;
@@ -1184,6 +1248,7 @@ footer {
 .jobs-card ol { font-size: calc(var(--user-font-size) * 0.9); }
 .skills-card h3 { font-size: calc(var(--user-font-size) * 1.25); }
 .jobs-card h3,
+.online-learning h3,
 .edu-card h3 { font-size: calc(var(--user-font-size) * 1.2); }
 .jobs-card > p,
 .edu-card h4,
