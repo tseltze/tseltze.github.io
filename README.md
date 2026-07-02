@@ -38,6 +38,7 @@ Before deployment, make sure these referenced assets are included at the expecte
 - `Resume.pdf`
 - `WGU Certificate Front-End Developer.png`
 - `WGU Certificate Back-End Developer.png`
+- `aws-certified-cloud-practitioner.png`
 - `world-map-statistics-preview.png`
 - `west-virginia-website-preview.png`
 - `rocking-horses-inventory-preview.png`
