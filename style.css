@@ -704,7 +704,7 @@ section {
 }
 
 
-.project-preview-image-mobile img {
+.project-preview-image.project-preview-image-mobile img {
     object-fit: contain;
     background: #181a1d;
 }

@@ -35,7 +35,7 @@ Before deployment, make sure these referenced assets are included at the expecte
 - `terina.jpg`
 - `terina_seltzer_logo.svg`
 - `favicon.svg`
-- `Resume.docx`
+- `Resume.pdf`
 - `WGU Certificate Front-End Developer.png`
 - `WGU Certificate Back-End Developer.png`
 - `world-map-statistics-preview.png`
