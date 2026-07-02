@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- SEO -->
+        <meta name="description" content="Terina Seltzer &mdash; Software Developer and Full Stack Engineer with a background in Java, Python, SQL, and cloud technologies. Available for junior engineering roles.">
+
+        <!-- Open Graph -->
+        <meta property="og:title" content="Terina Seltzer &mdash; Software Developer">
+        <meta property="og:description" content="Full Stack Engineer with a background in Java, Python, SQL, and cloud technologies. Available for junior engineering roles.">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="/terina.jpg">
+
+        <title>Terina Seltzer &mdash; Software Developer</title>
+
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="preload" as="image" href="terina.jpg">
+        <script>
+            /* Set saved theme before CSS loads to avoid a light/dark flash. */
+            (function () {
+                var saved;
+                try { saved = localStorage.getItem('theme'); } catch (e) {}
+                var light = saved
+                    ? saved === 'light'
+                    : window.matchMedia('(prefers-color-scheme: light)').matches;
+                document.documentElement.setAttribute('data-theme', light ? 'light' : 'dark');
+            }());
+        </script>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script src="main.js" defer></script>
+    </head>
+    <body>
+
+    <a href="#home" class="skip-link">Skip to content</a>
+    <div id="copy-toast" aria-live="polite">Email copied to clipboard!</div>
+
+    <header>
+        <a href="#home" class="logo" aria-label="Terina Seltzer &mdash; home">
+            <img src="terina_seltzer_logo.svg" alt="Terina Seltzer" width="320" height="100">
+        </a>
+        <nav aria-label="Primary navigation">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#certificates">Certificates</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div class="header-controls">
+            <button id="theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle light/dark mode">&#127769;</button>
+            <div class="control-panel">
+                <label for="sizeSlider">Text Size: </label>
+                <input type="range" id="sizeSlider" min="12" max="32" value="16" aria-valuemin="12" aria-valuemax="32" aria-valuenow="16" aria-valuetext="16 pixels">
+                <span id="sizeValue">16px</span>
+            </div>
+        </div>
+        <div id="progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </header>
+
+    <section id="home">
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <img src="terina.jpg" alt="Portrait of Terina Seltzer" title="Terina Seltzer" fetchpriority="high">
+        <div class="home-content">
+            <h1>Terina Seltzer</h1>
+            <h2><span class="sr-only">Software Developer, Full Stack Engineer, Java Developer, Problem Solver</span><span id="typewriter-text" aria-hidden="true"></span><span class="typewriter-cursor" aria-hidden="true">|</span></h2>
+            <!-- <h3>Full Stack Engineer</h3> -->
+            <p>Java &bull; Python &bull; SQL | Software Engineering Graduate | Database Development | Veteran</p>
+            <div class="btn-group">
+                <a href="https://www.linkedin.com/in/terina-seltzer/" target="_blank" rel="noopener noreferrer" class="btn">LinkedIn</a>
+                <a href="mailto:terina.seltzer@gmail.com" id="copy-email-btn" class="btn btn-secondary">Email Me</a>
+                <a href="/Resume.docx" download="Terina_Seltzer_Resume.docx" class="btn btn-outline">Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="reveal">
+        <h2>About Me</h2>
+        <p>Software engineering graduate with hands-on experience building applications using Java, Python, SQL, and modern web technologies.</p>
+        <p>I focus on writing clean, maintainable code and applying object-oriented design principles to solve real-world problems.</p>
+        <p>Through academic and personal projects, I've developed full-stack applications, designed relational databases, and implemented backend logic using industry-standard tools.</p>
+        <p>After a career pause to manage complex caregiving responsibilities, I returned to technology with sharpened problem-solving, organizational, and resilience skills.</p>
+        <p>I'm seeking a junior software developer opportunity where I can contribute to a team, continue growing my technical skills, and build meaningful, reliable software.</p>
+    </section>
+
+    <div id="highlights">
+        <div class="highlights-grid">
+            <div class="highlight-card reveal">
+                <h3 data-count="10" data-suffix="+">10+</h3>
+                <p>Years in IT</p>
+            </div>
+            <div class="highlight-card reveal">
+                <h3>Java</h3>
+                <p>Development</p>
+            </div>
+            <div class="highlight-card reveal">
+                <h3>Project+</h3>
+                <p>Certified</p>
+            </div>
+            <div class="highlight-card reveal">
+                <h3>AWS CCP</h3>
+                <p>Certified</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="skills">
+        <div class="section-intro reveal">
+            <h2>Skills</h2>
+            <p class="section-subtitle">A modern stack for AI-powered digital products.</p>
+            <p class="section-desc">Deep product engineering across LLM systems, frontend craft, backend services, mobile platforms, and cloud operations.</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skills-card reveal">
+                <h3>Frontend</h3>
+                <p>Premium interfaces with strong accessibility, animation, and product polish.</p>
+                <div class="keyword">
+                    <span>Typescript</span>
+                    <span>Angular</span>
+                    <span>React</span>
+                    <span>PHP</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>Backend</h3>
+                <p>Secure, scalable APIs and services for enterprise-grade systems.</p>
+                <div class="keyword">
+                    <span>Python</span>
+                    <span>Spring</span>
+                    <span>Node.js</span>
+                    <span>REST APIs</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>Mobile</h3>
+                <p>High-performance mobile experiences across Flutter, React Native, and native ecosystems.</p>
+                <div class="keyword">
+                    <span>Kotlin</span>
+                    <span>Swift</span>
+                    <span>React Native</span>
+                    <span>Flutter</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>Cloud &amp; DevOps</h3>
+                <p>Reliable delivery pipelines, observability-ready deployments, and cloud-native architecture.</p>
+                <div class="keyword">
+                    <span>AWS</span>
+                    <span>Docker</span>
+                    <span>Azure</span>
+                    <span>CI/CD</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>AI &amp; LLM</h3>
+                <p>Applied AI systems that combine model reasoning, retrieval, tools, and product UX.</p>
+                <div class="keyword">
+                    <span>Prompt Engineering</span>
+                    <span>OpenAI</span>
+                    <span>ChatGPT</span>
+                    <span>Perplexity</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>Networking</h3>
+                <p>Diagnosed and resolved hardware, software, and network issues, and provided solutions.</p>
+                <div class="keyword">
+                    <span>TCP/IP</span>
+                    <span>Data Management</span>
+                    <span>Virtualization</span>
+                    <span>VMWare</span>
+                </div>
+            </div>
+            <div class="skills-card reveal">
+                <h3>System Administration</h3>
+                <p>Administered and maintained network infrastructure, including servers, routers, and switches.</p>
+                <div class="keyword">
+                    <span>Microsoft Server</span>
+                    <span>Linux Server</span>
+                    <span>Virtualization</span>
+                    <span>Information Security</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="projects" class="projects-section">
+        <div class="section-intro reveal">
+            <h2>Projects</h2>
+            <p class="section-subtitle">Selected web and data projects.</p>
+            <p class="section-desc">A small collection of frontend, JavaScript, Java/Spring Boot, and Android work focused on interactive data, responsive layouts, and polished user experiences.</p>
+        </div>
+        <div class="projects-grid">
+            <figure class="project-preview-card reveal">
+                <div class="project-preview-image">
+                    <img src="world-map-statistics-preview.png" alt="World Map and Statistics application preview showing an interactive map and country information panel" loading="lazy">
+                </div>
+                <figcaption>
+                    <strong>World Map and Statistics</strong>
+                    Interactive JavaScript dashboard using World Bank API data to explore income, population, and GDP per capita with map controls, country search, and theme-aware panels.
+                </figcaption>
+            </figure>
+            <figure class="project-preview-card reveal">
+                <div class="project-preview-image">
+                    <img src="west-virginia-website-preview.png" alt="West Virginia website preview with navy navigation, dogwood graphics, and informational homepage content" loading="lazy">
+                </div>
+                <figcaption>
+                    <strong>West Virginia Website</strong>
+                    Responsive HTML, CSS, and JavaScript site celebrating West Virginia with custom visual styling, themed navigation, historical content, learning sections, and a welcoming state-focused presentation.
+                </figcaption>
+            </figure>
+            <figure class="project-preview-card reveal">
+                <div class="project-preview-image">
+                    <img src="rocking-horses-inventory-preview.png" alt="Seltzer's Rocking Horses Inventory System preview showing a Spring Boot inventory table for rocking horse parts" loading="lazy">
+                </div>
+                <figcaption>
+                    <strong>Seltzer's Rocking Horses Inventory System</strong>
+                    Spring Boot 3.3.6 inventory application built with Java 21, Maven, Thymeleaf, Spring Data JPA, and H2 to manage in-house and outsourced rocking horse parts with search, update, and delete workflows.
+                </figcaption>
+            </figure>
+            <figure class="project-preview-card reveal">
+                <div class="project-preview-image">
+                    <img src="landon-hotel-webpage-preview.png" alt="Landon Hotel webpage preview showing a full-width hotel hero image with London Ontario title text" loading="lazy">
+                </div>
+                <figcaption>
+                    <strong>Landon Hotel Webpage</strong>
+                    Java and Spring Boot hotel webpage project featuring a polished landing page experience, full-width visual hero, location-focused content, and server-rendered application structure.
+                </figcaption>
+            </figure>
+            <figure class="project-preview-card reveal">
+                <div class="project-preview-image project-preview-image-mobile">
+                    <img src="shepherd-pet-adoption-preview.png" alt="Shepherd pet adoption Android application preview showing category buttons for adoptable pets" loading="lazy">
+                </div>
+                <figcaption>
+                    <strong>Shepherd Pet Adoption</strong>
+                    Gradle-based Android pet adoption application built with Java and Kotlin, featuring a mobile-first browsing experience for adoptable pets across categories such as dogs, cats, birds, reptiles, and more.
+                </figcaption>
+            </figure>
+        </div>
+    </section>
+    <section id="experience">
+        <div class="section-intro reveal">
+            <h2>Experience</h2>
+            <p class="section-subtitle">Professional experience across web, mobile, SaaS, and AI.</p>
+            <p class="section-desc">A career path from enterprise network and systems administration to full-stack engineering and database management.</p>
+        </div>
+        <div class="jobs-grid">
+            <div class="jobs-card reveal">
+                <h3>Junior Full Stack Engineer</h3>
+                <p class="card-date"><time datetime="2026-03">Mar '26</time> &ndash; Present</p>
+                <p>Freelance</p>
+                <h4 class="impact-label">Impact</h4>
+                <ol>
+                    <li>Designed and developed a full-stack pet adoption application featuring an integrated volunteer recruitment module, enabling seamless user registration, pet browsing, and volunteer onboarding within a single platform</li>
+                    <li>Orchestrated the end-to-end development of a task management application, overseeing architecture decisions and implementation of core features, including task creation, assignment, and progress tracking</li>
+                    <li>Built a functional Java-based calculator application, implementing arithmetic logic and a user-friendly interface following object-oriented programming principles</li>
+                </ol>
+            </div>
+            <div class="jobs-card reveal">
+                <h3>Self-Paced Student</h3>
+                <p class="card-date"><time datetime="2023-04">Apr '23</time> &ndash; <time datetime="2026-03">Mar '26</time></p>
+                <p>Student</p>
+                <h4 class="impact-label">Impact</h4>
+                <ol>
+                    <li>Earned a Bachelor of Science in Software Engineering with a concentrated focus on full-stack application development and database systems, gaining a strong academic foundation in software design, system architecture, and engineering best practices</li>
+                    <li>Engineered multiple end-to-end software projects leveraging Java, Python, and SQL, applying advanced object-oriented programming principles &mdash; including inheritance, encapsulation, and polymorphism &mdash; to build scalable, maintainable, and efficient applications</li>
+                    <li>Architected and implemented production-quality relational databases using MySQL, designing normalized schemas and developing complex queries, stored procedures, and triggers to ensure data integrity, optimize performance, and support dynamic application functionality</li>
+                </ol>
+            </div>
+            <div class="jobs-card reveal">
+                <h3>Continuing Education & Volunteer Work</h3>
+                <p class="card-date"><time datetime="2013-02">Feb '13</time> &ndash; <time datetime="2023-03">Mar '23</time></p>
+                <p>Career Break</p>
+                <h4 class="impact-label">Impact</h4>
+                <ol>
+                    <li>Orchestrated complex, multi-faceted care schedules encompassing medical appointments, therapy sessions, and educational planning, ensuring seamless coordination across all areas to consistently meet individualized needs and long-term development goals</li>
+                    <li>Cultivated and maintained strategic relationships with healthcare providers, therapists, and educators to collaboratively design and execute personalized care plans, resulting in a cohesive support system that maximized outcomes and quality of life</li>
+                    <li>Thrived in a high-responsibility caregiving environment that demanded exceptional problem-solving, meticulous organization, and clear communication, consistently adapting to dynamic and time-sensitive challenges while maintaining a high standard of care</li>
+                </ol>
+            </div>
+            <div class="jobs-card reveal">
+                <h3>System Administrator &amp; PC Support</h3>
+                <p class="card-date"><time datetime="2010-04">Apr '10</time> &ndash; <time datetime="2013-01">Jan '13</time></p>
+                <p>VTLS Inc</p>
+                <h4 class="impact-label">Impact</h4>
+                <ol>
+                    <li>Architected and maintained a robust enterprise network infrastructure encompassing servers, routers, and switches, optimizing configurations to achieve maximum uptime, scalability, and seamless connectivity across the organization</li>
+                    <li>Executed comprehensive system lifecycle management for Windows and Linux server environments, including proactive patch deployment, performance tuning, and scheduled maintenance to eliminate vulnerabilities and ensure operational continuity</li>
+                    <li>Served as the primary escalation point for complex technical issues, systematically diagnosing and resolving critical hardware, software, and network failures while reducing average resolution time and improving end-user productivity across the organization</li>
+                </ol>
+            </div>
+            <div class="jobs-card reveal">
+                <h3>Network &amp; System Administrator</h3>
+                <p class="card-date"><time datetime="2000-03">Mar '00</time> &ndash; <time datetime="2006-03">Mar '06</time></p>
+                <p>US Air Force</p>
+                <h4 class="impact-label">Impact</h4>
+                <ol>
+                    <li>Administered and maintained enterprise network infrastructure, configuring and managing routers, switches, firewalls, and VPNs to ensure high availability, optimal performance, and security compliance across multi-site environments</li>
+                    <li>Monitored, diagnosed, and resolved complex system and network issues by leveraging industry-standard tools to perform real-time traffic analysis, patch management, and vulnerability assessments, reducing downtime and strengthening overall system resilience</li>
+                    <li>Supported classified network environments as an active TS/SCI clearance holder, ensuring strict adherence to DoD security protocols, NIST frameworks, and access control policies to safeguard sensitive data and mission-critical systems</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="section-intro reveal">
+            <h2>Education</h2>
+            <p class="section-subtitle">Academic Foundation.</p>
+            <p class="section-desc">Formal software engineering training paired with a decade of production systems administration.</p>
+        </div>
+        <div class="edu-div">
+            <div class="edu-card reveal">
+                <h3>Western Governors University</h3>
+                <p class="card-date"><time datetime="2023-04">Apr '23</time> &ndash; <time datetime="2026-03">Mar '26</time></p>
+                <h4>Bachelor's Degree</h4>
+                <p>Software Engineering</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates">
+        <div class="section-intro reveal">
+            <h2>Certifications</h2>
+            <p class="section-subtitle">Verified engineering credentials.</p>
+            <p class="section-desc">Certifications across frontend engineering, software engineering fundamentals, JavaScript, SQL, Node.js, Python, algorithms, and problem solving.</p>
+        </div>
+        <div class="cert-images reveal">
+            <img src="WGU Certificate Front-End Developer.png" alt="Front-End Developer certificate from WGU" title="Front-End Developer certificate" loading="lazy">
+            <img src="WGU Certificate Back-End Developer.png" alt="Back-End Developer certificate from WGU" title="Back-End Developer certificate" loading="lazy">
+        </div>
+        <div class="online-learning reveal">
+            <h3>Online Learning</h3>
+            <div class="learning-badges" aria-label="Online learning certificates">
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Open AI: Agent and Workflows</div>
+                    <img src="openai-agents-workflows-certificate.png" alt="OpenAI Academy course completion certificate for Agents and Workflows issued to Terina Seltzer" title="OpenAI Academy Agents and Workflows certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Open AI: Applied AI Foundations</div>
+                    <img src="openai-applied-ai-foundations-certificate.png" alt="OpenAI Academy course completion certificate for Applied AI Foundations issued to Terina Seltzer" title="OpenAI Academy Applied AI Foundations certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">OpenAI: AI Foundations</div>
+                    <img src="openai-ai-foundations-certificate.png" alt="OpenAI Academy course completion certificate for AI Foundations issued to Terina Seltzer" title="OpenAI Academy AI Foundations certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Learn JavaScript</div>
+                    <img src="codecademy-learn-javascript-certificate.png" alt="Codecademy certificate of completion for the Learn JavaScript course issued to Terina Seltzer" title="Codecademy Learn JavaScript certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Learn Bash Scripting</div>
+                    <img src="codecademy-learn-bash-scripting-certificate.png" alt="Codecademy certificate of completion for the Learn Bash Scripting course issued to Terina Seltzer" title="Codecademy Learn Bash Scripting certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Learn Python 3</div>
+                    <img src="codecademy-learn-python-3-certificate.png" alt="Codecademy certificate of completion for the Learn Python 3 course issued to Terina Seltzer" title="Codecademy Learn Python 3 certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Learn Kotlin</div>
+                    <img src="codecademy-learn-kotlin-certificate.png" alt="Codecademy certificate of completion for the Learn Kotlin course issued to Terina Seltzer" title="Codecademy Learn Kotlin certificate" loading="lazy">
+                </figure>
+                <figure class="learning-badge">
+                    <div class="learning-course-label">Lean Lua</div>
+                    <img src="codecademy-lean-lua-certificate.png" alt="Codecademy certificate of completion for the Lean Lua course issued to Terina Seltzer" title="Codecademy Lean Lua certificate" loading="lazy">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact">
+        <div class="section-intro reveal">
+            <h2>Contact</h2>
+            <p class="section-subtitle">Let's build a product together that feels exceptional.</p>
+            <p class="section-desc">Available for junior engineering, full-stack delivery, and enterprise platform initiatives.</p>
+        </div>
+        <div class="contact-links reveal">
+            <a href="https://www.linkedin.com/in/terina-seltzer/" target="_blank" rel="noopener noreferrer" class="btn">LinkedIn</a>
+            <a href="https://github.com/tseltzer" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+            <a href="/Resume.docx" download="Terina_Seltzer_Resume.docx" class="btn btn-outline">Download Resume</a>
+        </div>
+        <div class="contact-card reveal">
+            <div id="form-feedback" class="form-feedback" role="alert"></div>
+            <form id="contact-form" action="https://formspree.io/f/mykaqwyw" method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required minlength="2" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required minlength="3" placeholder="Project inquiry">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="6" required minlength="20" placeholder="Tell me about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Terina Seltzer. All rights reserved.</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="https://www.linkedin.com/in/terina-seltzer/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://github.com/tseltzer" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="mailto:terina.seltzer@gmail.com">Email</a>
+            <a href="/Resume.docx" download="Terina_Seltzer_Resume.docx">Resume</a>
+        </nav>
+        <p class="footer-built">Built with HTML, CSS &amp; JavaScript</p>
+    </footer>
+    </body>
+</html>
