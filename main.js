@@ -58,6 +58,35 @@ if (revealItems.length && 'IntersectionObserver' in window) {
 }
 
 // =====================
+// COUNT-UP ANIMATION
+// =====================
+var countEls = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+if (countEls.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
+    var countObs = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+            if (!entries[i].isIntersecting) continue;
+            var el = entries[i].target;
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            var suffix = el.getAttribute('data-suffix') || '';
+            var start = 0;
+            var duration = 1200;
+            var startTime = null;
+            countObs.unobserve(el);
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                el.textContent = Math.floor(progress * target) + suffix;
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+    }, { threshold: 0.5 });
+    countEls.forEach(function (el) { countObs.observe(el); });
+}
+
+
+
+// =====================
 // ACTIVE NAV + DOT NAV
 // =====================
 var headerNavLinks = Array.prototype.slice.call(
@@ -165,6 +194,9 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
     document.addEventListener('mousemove', function (e) {
         spotlight.style.left = e.clientX + 'px';
         spotlight.style.top  = e.clientY + 'px';
+        if (!spotlight.classList.contains('active')) {
+            spotlight.classList.add('active');
+        }
     }, { passive: true });
 }
 
@@ -180,10 +212,30 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
             var PCOUNT = window.innerWidth < 900 ? 30 : 60;
             var PDIST  = 120;
             var pAnimId;
+            // Cache accent RGB; re-read only when theme changes
+            var cachedAccentRGB = null;
+
+            function readAccentRGB() {
+                var raw = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+                var hex = raw.replace('#', '');
+                if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+                var r = parseInt(hex.substring(0,2),16);
+                var g = parseInt(hex.substring(2,4),16);
+                var b = parseInt(hex.substring(4,6),16);
+                cachedAccentRGB = r + ',' + g + ',' + b;
+            }
+
+            // Invalidate cache when data-theme attribute changes
+            new MutationObserver(readAccentRGB).observe(document.documentElement, {
+                attributes: true, attributeFilter: ['data-theme']
+            });
 
             function resizeHero() {
                 heroCanvas.width  = heroCanvas.offsetWidth  || heroCanvas.parentElement.offsetWidth;
                 heroCanvas.height = heroCanvas.offsetHeight || heroCanvas.parentElement.offsetHeight;
+                // Re-scatter particles into the new canvas dimensions
+                pts = [];
+                for (var pi = 0; pi < PCOUNT; pi++) pts.push(newPt());
             }
 
             function newPt() {
@@ -197,6 +249,7 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
             }
 
             function drawPts() {
+                var rgb = cachedAccentRGB;
                 pctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
                 for (var pi = 0; pi < pts.length; pi++) {
                     var p = pts[pi];
@@ -205,7 +258,7 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
                     if (p.y < 0 || p.y > heroCanvas.height) p.vy *= -1;
                     pctx.beginPath();
                     pctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                    pctx.fillStyle = 'rgba(59,130,246,0.55)';
+                    pctx.fillStyle = 'rgba(' + rgb + ',0.55)';
                     pctx.fill();
                 }
                 for (var a = 0; a < pts.length; a++) {
@@ -216,7 +269,7 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
                             pctx.beginPath();
                             pctx.moveTo(pts[a].x, pts[a].y);
                             pctx.lineTo(pts[b].x, pts[b].y);
-                            pctx.strokeStyle = 'rgba(59,130,246,' + (0.18 * (1 - d / PDIST)) + ')';
+                            pctx.strokeStyle = 'rgba(' + rgb + ',' + (0.18 * (1 - d / PDIST)) + ')';
                             pctx.lineWidth = 0.7;
                             pctx.stroke();
                         }
@@ -225,11 +278,18 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
                 pAnimId = requestAnimationFrame(drawPts);
             }
 
-            window.addEventListener('load', function () {
+            function startCanvas() {
+                readAccentRGB();
                 resizeHero();
-                for (var pi = 0; pi < PCOUNT; pi++) pts.push(newPt());
                 pAnimId = requestAnimationFrame(drawPts);
-            });
+            }
+
+            // defer + load: start immediately if load already fired, else wait
+            if (document.readyState === 'complete') {
+                startCanvas();
+            } else {
+                window.addEventListener('load', startCanvas);
+            }
             window.addEventListener('resize', resizeHero, { passive: true });
         }
     }
