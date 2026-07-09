@@ -185,22 +185,6 @@ backBtn.addEventListener('click', function () {
 });
 
 // =====================
-// CURSOR SPOTLIGHT
-// =====================
-if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
-    var spotlight = document.createElement('div');
-    spotlight.id = 'cursor-spotlight';
-    document.body.appendChild(spotlight);
-    document.addEventListener('mousemove', function (e) {
-        spotlight.style.left = e.clientX + 'px';
-        spotlight.style.top  = e.clientY + 'px';
-        if (!spotlight.classList.contains('active')) {
-            spotlight.classList.add('active');
-        }
-    }, { passive: true });
-}
-
-// =====================
 // HERO CANVAS PARTICLES
 // =====================
 if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {

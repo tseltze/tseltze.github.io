@@ -96,6 +96,16 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Hide dot grid on large screens where it becomes visually noisy */
+@media (min-width: 90rem) {
+    body {
+        background-image:
+            linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        background-size: 100% 100%;
+        background-attachment: local;
+    }
+}
+
 
 /* ACCESSIBILITY: keyboard skip link and focus-friendly helpers */
 .skip-link {
@@ -1077,26 +1087,6 @@ footer {
     color: var(--bg-border);
 }
 
-/* ================
-   CURSOR SPOTLIGHT
-   ================ */
-#cursor-spotlight {
-    position: fixed;
-    width: 32rem;
-    height: 32rem;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(91, 141, 184, 0.08) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 0;
-    transition: left 0.08s ease, top 0.08s ease;
-    display: none;
-}
-
-#cursor-spotlight.active {
-    display: block;
-}
-
 /* ===========
    BACK TO TOP
    =========== */
@@ -1280,9 +1270,5 @@ footer {
     .reveal {
         opacity: 1;
         transform: none;
-    }
-
-    #cursor-spotlight {
-        display: none;
     }
 }
