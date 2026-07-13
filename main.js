@@ -137,7 +137,14 @@ if (navSections.length && 'IntersectionObserver' in window) {
 // =====================
 var typeEl = document.getElementById('typewriter-text');
 if (typeEl) {
-    var roles = ['Software Developer', 'Full Stack Engineer', 'Java Developer', 'Problem Solver'];
+    var roles = [
+        'Software Developer',
+        'Full Stack Engineer',
+        'Open Source Enthusiast',
+        'Passionate Developer',
+        'Always Learning',
+        'Problem Solver'
+    ];
 
     if (prefersReducedMotion) {
         typeEl.textContent = roles[0];
