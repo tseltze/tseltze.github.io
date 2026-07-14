@@ -125,6 +125,7 @@
   font-size: 2.6rem;
   color: #0f172a;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
 }
 

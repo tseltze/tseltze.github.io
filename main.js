@@ -28,11 +28,10 @@ if (themeToggle) {
         themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     }
 
-    // Use saved choice, else fall back to OS preference
+    // Use saved choice, else default to dark regardless of OS preference
     var savedTheme = null;
     try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
-    var systemLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    applyTheme(savedTheme || (systemLight ? 'light' : 'dark'));
+    applyTheme(savedTheme || 'dark');
 
     themeToggle.addEventListener('click', function () {
         var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
@@ -207,13 +206,18 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
             var cachedAccentRGB = null;
 
             function readAccentRGB() {
+                // Resolve --accent (hex, rgb(a), hsl(a), or any valid CSS color)
+                // to "r,g,b" by letting the browser normalize it via a probe element,
+                // rather than assuming a hex string.
                 var raw = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-                var hex = raw.replace('#', '');
-                if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-                var r = parseInt(hex.substring(0,2),16);
-                var g = parseInt(hex.substring(2,4),16);
-                var b = parseInt(hex.substring(4,6),16);
-                cachedAccentRGB = r + ',' + g + ',' + b;
+                var probe = document.createElement('div');
+                probe.style.color = raw;
+                probe.style.display = 'none';
+                document.body.appendChild(probe);
+                var computed = getComputedStyle(probe).color; // "rgb(r, g, b)" or "rgba(r, g, b, a)"
+                document.body.removeChild(probe);
+                var nums = computed.match(/[\d.]+/g) || ['91', '141', '184'];
+                cachedAccentRGB = nums.slice(0, 3).join(',');
             }
 
             // Invalidate cache when data-theme attribute changes
