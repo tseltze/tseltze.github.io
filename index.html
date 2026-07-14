@@ -29,11 +29,11 @@
     <script>
       /* Set saved theme before CSS loads to avoid a light/dark flash. */
       (function () {
-        var saved;
+        let saved;
         try {
           saved = localStorage.getItem("theme");
         } catch (e) {}
-        var light = saved
+        let light = saved
           ? saved === "light"
           : window.matchMedia("(prefers-color-scheme: light)").matches;
         document.documentElement.setAttribute(
@@ -43,7 +43,9 @@
       })();
     </script>
     <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="chess.css" type="text/css" />
     <script src="main.js" defer></script>
+    <script src="chess.js" defer></script>
   </head>
   <body>
     <a href="#home" class="skip-link">Skip to content</a>
@@ -68,7 +70,16 @@
         <a href="#certificates">Certificates</a>
         <a href="#contact">Contact</a>
       </nav>
+
       <div class="header-controls">
+        <button
+          id="chess"
+          type="button"
+          title="Play chess"
+          aria-haspopup="dialog"
+        >
+          <img src="icons8-chess-64.png" alt="knight chess piece" />
+        </button>
         <button
           id="theme-toggle"
           type="button"
@@ -659,7 +670,16 @@
           <h4>Bachelor's Degree</h4>
           <p>Software Engineering</p>
         </div>
-      </div>
+        <div class="edu-card reveal">
+          <h3>College of the Air Force</h3>
+          <p class="card-date">
+            <time datetime="2006-03">Mar '06</time> &ndash;
+            <time datetime="2000-03">Mar '00</time>
+          </p>
+          <h4>Associate's Degree</h4>
+          <p>Information Technology</p>
+        </div>
+        </div>
     </section>
 
     <section id="certificates">
@@ -883,5 +903,73 @@
       </nav>
       <p class="footer-built">Built with HTML, CSS &amp; JavaScript</p>
     </footer>
+
+    <!-- CHESS POPUP -->
+    <div id="chess-modal" class="modal-overlay" hidden>
+      <div
+        class="modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chess-modal-title"
+      >
+        <button
+          id="chess-modal-close"
+          type="button"
+          class="modal-close"
+          aria-label="Close chess popup"
+        >
+          &times;
+        </button>
+        <h2 id="chess-modal-title">Chess</h2>
+        <div id="turn-indicator">Turn: White</div>
+        <div class="controls">
+          <button type="button" id="undo-btn">Undo Move</button>
+          <button type="button" id="castle-kingside-btn">Castle Kingside</button>
+          <button type="button" id="castle-queenside-btn">Castle Queenside</button>
+          <button type="button" id="history-btn">Move History</button>
+          <button type="button" id="reset-btn">Reset Game</button>
+        </div>
+        <div class="scoreboard">
+          <div>White Score: <span id="score-white">0</span></div>
+          <div>Black Score: <span id="score-black">0</span></div>
+        </div>
+        <div id="captured-white"></div>
+        <div id="chess-board"></div>
+        <div id="captured-black"></div>
+      </div>
+    </div>
+
+    <!-- Chess: History Modal -->
+    <div id="history-modal">
+      <div class="modal-content">
+        <span class="close" id="history-close">&times;</span>
+        <h2>Move History</h2>
+        <table id="history-table">
+          <thead>
+            <tr><th>#</th><th>Player</th><th>Piece</th><th>From</th><th>To</th><th>Capture?</th><th>Captured Piece</th></tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chess: Result Modal -->
+    <div id="result-modal">
+      <div class="modal-content">
+        <span class="close" id="result-close">&times;</span>
+        <h2 id="result-text"></h2>
+      </div>
+    </div>
+
+    <!-- Chess: Promotion Modal -->
+    <div id="promotion-modal">
+      <div class="modal-content">
+        <h3>Select a piece to promote</h3>
+        <div id="promotion-options"></div>
+      </div>
+    </div>
+
+    <!-- Chess: toast notifications -->
+    <div id="toast-container"></div>
   </body>
 </html>

@@ -393,3 +393,34 @@ if (sizeSlider && sizeValue) {
         try { localStorage.setItem('textSize', normalized); } catch (e) {}
     });
 }
+// =====================
+// CHESS POPUP
+// =====================
+var chessBtn   = document.getElementById('chess');
+var chessModal = document.getElementById('chess-modal');
+var chessClose = document.getElementById('chess-modal-close');
+
+if (chessBtn && chessModal && chessClose) {
+    function openChessModal() {
+        chessModal.hidden = false;
+        chessClose.focus();
+    }
+
+    function closeChessModal() {
+        chessModal.hidden = true;
+        chessBtn.focus();
+    }
+
+    chessBtn.addEventListener('click', openChessModal);
+    chessClose.addEventListener('click', closeChessModal);
+
+    // Close when clicking the dimmed background (but not the box itself)
+    chessModal.addEventListener('click', function (e) {
+        if (e.target === chessModal) closeChessModal();
+    });
+
+    // Close with the Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !chessModal.hidden) closeChessModal();
+    });
+}
