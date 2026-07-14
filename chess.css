@@ -142,7 +142,7 @@
   background: rgba(239, 68, 68, 0.45) !important;
 }
 
-#toast-container {
+#toast-alert {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
@@ -196,9 +196,13 @@
   }
 }
 
-#history-modal,
-#result-modal,
-#promotion-modal {
+/* These ids must exactly match the div ids in index.html:
+   #history-id, #result-id, #promotion-id (no space -- a space here makes
+   this a totally different selector: "any element named <id> inside
+   #history", which matches nothing). */
+#history-id,
+#result-id,
+#promotion-id {
   display: none;
   position: fixed;
   top: 0;
@@ -225,7 +229,7 @@
   position: relative;
 }
 
-.close {
+.chess-span {
   position: absolute;
   top: 8px;
   right: 12px;
@@ -235,15 +239,15 @@
   transition: color 0.3s ease;
 }
 
-.close:hover {
+.chess-span:hover {
   color: var(--accent);
 }
 
-#promotion-modal .modal-content {
+#promotion-id .modal-content {
   max-width: 320px;
 }
 
-#promotion-modal h3 {
+#promotion-id h3 {
   margin: 0.2rem 0 1rem;
   font-size: 1.2rem;
 }

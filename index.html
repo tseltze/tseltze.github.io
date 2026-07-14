@@ -1018,14 +1018,13 @@
         aria-labelledby="Chess Game"
       >
         <button
-          id="chess-modal-close"
+          id="chess-modal-id"
           type="button"
-          class="modal-close"
+          class="modal-class"
           aria-label="Close chess popup"
         >
           &times;
         </button>
-        <h2 id="chess-modal-title">Chess</h2>
         <div id="turn-indicator">Turn: White</div>
         <div class="controls">
           <button type="button" id="undo-btn">Undo Move</button>
@@ -1039,8 +1038,8 @@
           <button type="button" id="reset-btn">Reset Game</button>
         </div>
         <div class="scoreboard">
-          <div>White Score: <span id="score-white">0</span></div>
-          <div>Black Score: <span id="score-black">0</span></div>
+          <div>White Score: <span id="white-score">0</span></div>
+          <div>Black Score: <span id="black-score">0</span></div>
         </div>
         <div id="captured-white"></div>
         <div id="chess-board"></div>
@@ -1048,10 +1047,10 @@
       </div>
     </div>
 
-    <!-- Chess: History Modal -->
-    <div id="history-modal">
+    <!-- Chess History -->
+    <div id="history-id">
       <div class="modal-content">
-        <span class="close" id="history-close">&times;</span>
+        <span class="chess-span" id="history-span">&times;</span>
         <h2>Move History</h2>
         <table id="history-table">
           <thead>
@@ -1070,23 +1069,23 @@
       </div>
     </div>
 
-    <!-- Chess: Result Modal -->
-    <div id="result-modal">
+    <!-- Chess Result -->
+    <div id="result-id">
       <div class="modal-content">
-        <span class="close" id="result-close">&times;</span>
+        <span class="chess-span" id="result-span">&times;</span>
         <h2 id="result-text"></h2>
       </div>
     </div>
 
-    <!-- Chess: Promotion Modal -->
-    <div id="promotion-modal">
+    <!-- Chess Promotion -->
+    <div id="promotion-id">
       <div class="modal-content">
-        <h3>Select a piece to promote</h3>
-        <div id="promotion-options"></div>
+        <h3>Select a chess piece to promote</h3>
+        <div id="promotion-choice"></div>
       </div>
     </div>
 
-    <!-- Chess: toast notifications -->
-    <div id="toast-container"></div>
+    <!-- Chess Notifications -->
+    <div id="toast-alert"></div>
   </body>
 </html>

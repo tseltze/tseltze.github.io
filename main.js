@@ -402,7 +402,9 @@ if (sizeSlider && sizeValue) {
 // =====================
 var chessBtn   = document.getElementById('chess');
 var chessModal = document.getElementById('chess-modal');
-var chessClose = document.getElementById('chess-modal-close');
+// NOTE: this id must match the close button's id attribute in index.html.
+// It was renamed from "chess-modal-close" to "chess-modal-id" there, so it has to match here too.
+var chessClose = document.getElementById('chess-modal-id');
 
 if (chessBtn && chessModal && chessClose) {
     function openChessModal() {
