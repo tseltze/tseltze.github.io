@@ -424,3 +424,32 @@ if (chessBtn && chessModal && chessClose) {
         if (e.key === 'Escape' && !chessModal.hidden) closeChessModal();
     });
 }
+
+// =====================
+// MOBILE NAV TOGGLE
+// =====================
+var navToggle = document.getElementById('nav-toggle');
+var primaryNav = document.getElementById('primary-nav');
+
+if (navToggle && primaryNav) {
+    function setNavOpen(open) {
+        primaryNav.classList.toggle('open', open);
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        navToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        navToggle.innerHTML = open ? '&times;' : '&#9776;';
+    }
+
+    navToggle.addEventListener('click', function () {
+        setNavOpen(!primaryNav.classList.contains('open'));
+    });
+
+    // Close the menu after choosing a section
+    primaryNav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') setNavOpen(false);
+    });
+
+    // Close if the window is resized back to desktop width
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 896 && primaryNav.classList.contains('open')) setNavOpen(false);
+    }, { passive: true });
+}
