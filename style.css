@@ -11,9 +11,7 @@ textarea {
   font-family: inherit;
 }
 
-/* DESIGN TOKENS */
 :root {
-  /* Layout */
   --header-height: 4.375rem;
   --user-font-size: 1rem;
 
@@ -49,19 +47,21 @@ textarea {
   --shadow: 0 0.625rem 1.875rem hsla(0, 0%, 0%, 0.25);
   --shadow-dark: hsla(0, 0%, 0%, 0.5);
   --shadow-hover: 0 0.938rem 2.188rem var(--accent-focus);
-
-  /* Dot-grid color (theme-aware) */
-  --dot-color: hsla(0, 0%, 100%, 0.35);
 }
 
 /* LIGHT THEME: applied when theme="light" */
 :root[data-theme="light"] {
-  --bg-primary: hsla(210, 40%, 96%, 1);
-  --bg-secondary: hsla(214, 32%, 91%, 1);
-  --bg-card: hsla(0, 0%, 100%, 1);
-  --bg-border: hsla(213, 27%, 84%, 1);
-  --bg-header: hsla(0, 0%, 100%, 0.85);
-  --bg-input: hsla(222, 47%, 11%, 0.04);
+  /* Warm dark-cream palette instead of the previous near-white/blue-gray
+     one -- same hue family (a warm, slightly yellow-orange tan) across
+     all four background tokens, just at different lightness levels, so
+     --bg-card still reads as "the lighter surface" against
+     --bg-primary/--bg-secondary underneath it. */
+  --bg-primary: hsla(40, 38%, 90%, 1);
+  --bg-secondary: hsla(36, 32%, 85%, 1);
+  --bg-card: hsla(42, 45%, 96%, 1);
+  --bg-border: hsla(35, 22%, 76%, 1);
+  --bg-header: hsla(40, 38%, 90%, 0.85);
+  --bg-input: hsla(30, 40%, 20%, 0.05);
 
   --text-primary: hsla(222, 47%, 11%, 1);
   --text-secondary: hsla(215, 25%, 27%, 1);
@@ -71,10 +71,8 @@ textarea {
   --accent-dark: hsla(203, 39%, 33%, 1);
   --accent-light: hsla(182, 42%, 32%, 1);
 
-  --shadow: 0 0.625rem 1.875rem hsla(222, 47%, 11%, 0.12);
-  --shadow-dark: hsla(222, 47%, 11%, 0.18);
-
-  --dot-color: hsla(215, 16%, 47%, 0.25);
+  --shadow: 0 0.625rem 1.875rem hsla(30, 30%, 20%, 0.14);
+  --shadow-dark: hsla(30, 30%, 20%, 0.2);
 }
 
 /* GLOBAL: page-wide typography, background, and base behavior */
@@ -85,32 +83,19 @@ html {
 
 body {
   background-color: var(--bg-primary);
-  background-image:
-    radial-gradient(circle, var(--dot-color) 1px, transparent 1px),
-    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  background-size:
-    1.5rem 1.5rem,
-    100% 100%;
-  background-attachment: local, local;
+  /* Plain top-to-bottom gradient only -- the dot grid was removed in
+     favor of the animated particle canvas in the hero section
+     (see #hero-canvas / main.js), so there's no need for both a static
+     dot texture AND the moving particles competing for attention. */
+  background-image: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background-size: 100% 100%;
+  background-attachment: local;
   color: var(--text-primary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
-}
-
-/* Hide dot grid on large screens where it becomes visually noisy */
-@media (min-width: 90rem) {
-  body {
-    background-image: linear-gradient(
-      180deg,
-      var(--bg-primary) 0%,
-      var(--bg-secondary) 100%
-    );
-    background-size: 100% 100%;
-    background-attachment: local;
-  }
 }
 
 /* ACCESSIBILITY: keyboard skip link and focus-friendly helpers */
@@ -138,10 +123,10 @@ body {
 }
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: 0.063rem;
+  height: 0.063rem;
   padding: 0;
-  margin: -1px;
+  margin: -0.063rem;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -154,7 +139,7 @@ body {
   bottom: 0;
   left: 0;
   width: 0%;
-  height: 3px;
+  height: 0.188rem;
   background: linear-gradient(90deg, var(--accent), var(--accent-light));
   z-index: 1001;
   transition: width 0.1s linear;
@@ -168,7 +153,7 @@ body {
   transform: translateX(-50%) translateY(1rem);
   background: var(--bg-card);
   color: var(--text-primary);
-  border: 1px solid var(--accent);
+  border: 0.063rem solid var(--accent);
   border-radius: var(--radius);
   padding: 0.75rem 1.5rem;
   font-size: 0.9rem;
@@ -279,7 +264,7 @@ header a {
   font-weight: 600;
   font-size: 0.9rem;
   padding-bottom: 0.2rem;
-  border-bottom: 2px solid transparent;
+  border-bottom: 0.125rem solid transparent;
   transition:
     color 0.3s ease,
     border-color 0.3s ease;
@@ -329,7 +314,7 @@ header a.active {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 0.625rem;
   flex: 0 1 auto;
   margin-left: auto;
   min-width: 0;
@@ -339,10 +324,10 @@ header a.active {
 .control-panel {
   display: inline-flex;
   align-items: center;
-  flex: 0 1 230px;
-  max-width: 230px;
+  flex: 0 1 14.375rem;
+  max-width: 14.375rem;
   min-width: 0;
-  gap: 7px;
+  gap: 0.438rem;
   margin-left: 0;
   font-size: 0.9rem;
   line-height: 1.2;
@@ -359,14 +344,14 @@ header a.active {
 }
 
 .control-panel input[type="range"] {
-  flex: 1 1 90px;
-  width: 90px;
-  min-width: 70px;
-  max-width: 110px;
+  flex: 1 1 5.625rem;
+  width: 5.625rem;
+  min-width: 4.375rem;
+  max-width: 6.875rem;
 }
 
 #sizeValue {
-  width: 34px;
+  width: 2.125rem;
   text-align: right;
 }
 
@@ -412,7 +397,7 @@ section {
    ============ */
 #home {
   position: relative;
-  min-height: 75vh;
+  min-height: 40.88rem;
   display: flex;
   flex-direction: row;
   padding: 7.5rem max(2rem, calc(50% - 38rem));
@@ -487,7 +472,7 @@ section {
 .typewriter-cursor {
   display: inline-block;
   color: var(--accent);
-  margin-left: 2px;
+  margin-left: 0.125rem;
   animation: blink 0.75s step-end infinite;
 }
 
@@ -544,7 +529,7 @@ section {
 
 .btn-secondary {
   background: transparent;
-  border: 2px solid var(--accent);
+  border: 0.125rem solid var(--accent);
   color: var(--accent);
 }
 
@@ -554,7 +539,7 @@ section {
 
 .btn-outline {
   background: transparent;
-  border: 2px solid var(--text-muted);
+  border: 0.125rem solid var(--text-muted);
   color: var(--text-secondary);
 }
 
@@ -701,7 +686,7 @@ section {
   background-color: var(--accent-subtle);
   color: var(--accent-light);
   border: 0.063rem solid var(--accent);
-  border-radius: 9999px;
+  border-radius: 624.938rem;
   padding: 0.3rem 0.75rem;
   font-size: 0.8rem;
   font-weight: 600;
@@ -784,7 +769,11 @@ section {
   position: absolute;
   inset: auto 0 0;
   height: 42%;
-  background: linear-gradient(180deg, hsla(217, 33%, 19%, 0), var(--bg-card) 84%);
+  background: linear-gradient(
+    180deg,
+    hsla(217, 33%, 19%, 0),
+    var(--bg-card) 84%
+  );
   pointer-events: none;
 }
 
@@ -820,11 +809,7 @@ section {
 }
 
 :root[data-theme="light"] .project-preview-image::after {
-  background: linear-gradient(
-    180deg,
-    hsla(0, 0%, 100%, 0),
-    var(--bg-card) 84%
-  );
+  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0), var(--bg-card) 84%);
 }
 
 /* =================
@@ -868,7 +853,7 @@ section {
   gap: 0.25rem;
   background: var(--accent-subtle);
   border: 0.063rem solid var(--accent);
-  border-radius: 9999px;
+  border-radius: 624.938rem;
   padding: 0.2rem 0.75rem;
   color: var(--accent-light);
   font-size: 0.8rem;
@@ -980,7 +965,7 @@ section {
     0 0 0 0.45rem var(--bg-card);
 }
 #certificates .cert-images img {
-  width: clamp(10rem, 20vw, 16rem);
+  width: clamp(10rem, 19.2rem, 16rem);
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
@@ -1066,14 +1051,14 @@ section {
 .form-feedback.success {
   display: block;
   background: hsla(142, 71%, 45%, 0.1);
-  border: 1px solid var(--color-success);
+  border: 0.063rem solid var(--color-success);
   color: var(--color-success-text);
 }
 
 .form-feedback.error {
   display: block;
   background: hsla(0, 84%, 60%, 0.1);
-  border: 1px solid var(--color-error);
+  border: 0.063rem solid var(--color-error);
   color: var(--color-error);
 }
 
@@ -1098,7 +1083,7 @@ section {
 .form-group input,
 .form-group textarea {
   background: var(--bg-input);
-  border: 2px solid transparent;
+  border: 0.125rem solid transparent;
   border-radius: 0.75rem;
   padding: 1rem;
   color: var(--text-primary);
@@ -1289,8 +1274,8 @@ footer {
   }
 
   .control-panel {
-    flex: 0 1 220px;
-    max-width: calc(100vw - 5rem);
+    flex: 0 1 13.75rem;
+    max-width: calc(96rem - 5rem);
   }
 }
 @media (max-width: 48rem) {
@@ -1423,8 +1408,8 @@ footer {
   box-shadow: var(--shadow);
   padding: 2rem 2.5rem;
   width: 100%;
-  max-width: min(92vw, 46rem);
-  max-height: 90vh;
+  max-width: min(88.32rem, 46rem);
+  max-height: 49.05rem;
   overflow: auto;
 }
 

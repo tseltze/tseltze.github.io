@@ -6,7 +6,7 @@ A responsive personal portfolio site for Terina Seltzer, built with plain HTML, 
 
 - `index.html` - Main page markup, SEO/Open Graph metadata, content sections, navigation, and contact form.
 - `style.css` - Theme tokens, layout, responsive styles, accessibility helpers, animations, and user text-size styling.
-- `main.js` - Theme switching, scroll progress, section highlighting, typewriter animation, canvas effects, email copy behavior, contact form handling, copyright year, and text-size persistence.
+- `main.js` - Theme switching, scroll progress, section highlighting, typewriter animation, canvas effects, email copy behavior, contact form handling, chess game, and text-size persistence.
 
 ## Main Features
 
@@ -27,3 +27,5 @@ A responsive personal portfolio site for Terina Seltzer, built with plain HTML, 
 - Animated typewriter text is hidden from assistive technology and paired with stable screen-reader text.
 - The text-size slider updates `aria-valuenow` and `aria-valuetext`.
 - Focus-visible styles are included for keyboard navigation.
+
+![alt text](personal-website)
