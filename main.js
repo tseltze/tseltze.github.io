@@ -3,20 +3,6 @@
 var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // =====================
-// SCROLL PROGRESS BAR
-// =====================
-var progressBar = document.getElementById('progress');
-if (progressBar) {
-    window.addEventListener('scroll', function () {
-        var scrollTop    = document.documentElement.scrollTop;
-        var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-        progressBar.style.width = pct + '%';
-        progressBar.setAttribute('aria-valuenow', Math.round(pct));
-    }, { passive: true });
-}
-
-// =====================
 // THEME TOGGLE
 // =====================
 var themeToggle = document.getElementById('theme-toggle');
@@ -41,49 +27,33 @@ if (themeToggle) {
 }
 
 // =====================
-// REVEAL ON SCROLL
+// MOBILE NAV TOGGLE
 // =====================
-var revealItems = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
-if (revealItems.length && 'IntersectionObserver' in window) {
-    var revealObs = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-            if (entries[i].isIntersecting) {
-                entries[i].target.classList.add('visible');
-                revealObs.unobserve(entries[i].target);
-            }
-        }
-    }, { threshold: 0.1 });
-    revealItems.forEach(function (el) { revealObs.observe(el); });
+var navToggle = document.getElementById('nav-toggle');
+var primaryNav = document.getElementById('primary-nav');
+
+if (navToggle && primaryNav) {
+    function setNavOpen(open) {
+        primaryNav.classList.toggle('open', open);
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        navToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        navToggle.innerHTML = open ? '&times;' : '&#9776;';
+    }
+
+    navToggle.addEventListener('click', function () {
+        setNavOpen(!primaryNav.classList.contains('open'));
+    });
+
+    // Close the menu after choosing a section
+    primaryNav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') setNavOpen(false);
+    });
+
+    // Close if the window is resized back to desktop width
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 896 && primaryNav.classList.contains('open')) setNavOpen(false);
+    }, { passive: true });
 }
-
-// =====================
-// COUNT-UP ANIMATION
-// =====================
-var countEls = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
-if (countEls.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
-    var countObs = new IntersectionObserver(function (entries) {
-        for (var i = 0; i < entries.length; i++) {
-            if (!entries[i].isIntersecting) continue;
-            var el = entries[i].target;
-            var target = parseInt(el.getAttribute('data-count'), 10);
-            var suffix = el.getAttribute('data-suffix') || '';
-            var start = 0;
-            var duration = 1200;
-            var startTime = null;
-            countObs.unobserve(el);
-            function step(timestamp) {
-                if (!startTime) startTime = timestamp;
-                var progress = Math.min((timestamp - startTime) / duration, 1);
-                el.textContent = Math.floor(progress * target) + suffix;
-                if (progress < 1) requestAnimationFrame(step);
-            }
-            requestAnimationFrame(step);
-        }
-    }, { threshold: 0.5 });
-    countEls.forEach(function (el) { countObs.observe(el); });
-}
-
-
 
 // =====================
 // ACTIVE NAV + DOT NAV
@@ -132,6 +102,82 @@ if (navSections.length && 'IntersectionObserver' in window) {
 }
 
 // =====================
+// CHESS POPUP
+// =====================
+var chessBtn   = document.getElementById('chess');
+var chessModal = document.getElementById('chess-modal');
+// NOTE: this id must match the close button's id attribute in index.html.
+// It was renamed from "chess-modal-close" to "chess-modal-id" there, so it has to match here too.
+var chessClose = document.getElementById('chess-modal-id');
+
+if (chessBtn && chessModal && chessClose) {
+    function openChessModal() {
+        chessModal.hidden = false;
+        chessClose.focus();
+    }
+
+    function closeChessModal() {
+        chessModal.hidden = true;
+        chessBtn.focus();
+    }
+
+    chessBtn.addEventListener('click', openChessModal);
+    chessClose.addEventListener('click', closeChessModal);
+
+    // Close when clicking the dimmed background (but not the box itself)
+    chessModal.addEventListener('click', function (e) {
+        if (e.target === chessModal) closeChessModal();
+    });
+
+    // Close with the Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !chessModal.hidden) closeChessModal();
+    });
+}
+
+// =====================
+// CONTACT FORM
+// =====================
+var contactForm     = document.getElementById('contact-form');
+var contactFeedback = document.getElementById('form-feedback');
+
+if (contactForm && contactFeedback) {
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = contactForm.querySelector('button[type="submit"]');
+        if (!btn) {
+            contactFeedback.className = 'form-feedback error';
+            contactFeedback.textContent = 'The contact form is missing its submit button. Please email terina.seltzer@gmail.com directly.';
+            return;
+        }
+        var orig = btn.textContent;
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+        contactFeedback.className = 'form-feedback';
+
+        fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { Accept: 'application/json' }
+        }).then(function (res) {
+            if (res.ok) {
+                contactForm.reset();
+                contactFeedback.className = 'form-feedback success';
+                contactFeedback.textContent = "Message sent - I'll get back to you soon!";
+            } else {
+                throw new Error('error');
+            }
+        }).catch(function () {
+            contactFeedback.className = 'form-feedback error';
+            contactFeedback.textContent = 'Something went wrong. Please email terina.seltzer@gmail.com directly.';
+        }).then(function () {
+            btn.textContent = orig;
+            btn.disabled = false;
+        });
+    });
+}
+
+// =====================
 // TYPEWRITER HERO
 // =====================
 var typeEl = document.getElementById('typewriter-text');
@@ -173,22 +219,6 @@ if (typeEl) {
         typeTick();
     }
 }
-// =====================
-// BACK TO TOP
-// =====================
-var backBtn = document.createElement('button');
-backBtn.id = 'back-to-top';
-backBtn.setAttribute('aria-label', 'Back to top');
-backBtn.textContent = '\u2191';
-document.body.appendChild(backBtn);
-
-window.addEventListener('scroll', function () {
-    backBtn.classList.toggle('visible', window.scrollY > window.innerHeight * 0.5);
-}, { passive: true });
-
-backBtn.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-});
 
 // =====================
 // HERO CANVAS PARTICLES
@@ -291,76 +321,61 @@ if (!prefersReducedMotion && !window.matchMedia('(pointer: coarse)').matches) {
 }
 
 // =====================
-// COPY EMAIL
+// REVEAL ON SCROLL
 // =====================
-var copyEmailBtn = document.getElementById('copy-email-btn');
-var copyToast    = document.getElementById('copy-toast');
-var toastTimer;
-
-if (copyEmailBtn && copyToast) {
-    copyEmailBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText('terina.seltzer@gmail.com').then(function () {
-                clearTimeout(toastTimer);
-                copyToast.classList.add('show');
-                toastTimer = setTimeout(function () { copyToast.classList.remove('show'); }, 2500);
-            }).catch(function () {
-                window.location.href = 'mailto:terina.seltzer@gmail.com';
-            });
-        } else {
-            window.location.href = 'mailto:terina.seltzer@gmail.com';
-        }
-    });
-}
-
-// =====================
-// CONTACT FORM
-// =====================
-var contactForm     = document.getElementById('contact-form');
-var contactFeedback = document.getElementById('form-feedback');
-
-if (contactForm && contactFeedback) {
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var btn = contactForm.querySelector('button[type="submit"]');
-        if (!btn) {
-            contactFeedback.className = 'form-feedback error';
-            contactFeedback.textContent = 'The contact form is missing its submit button. Please email terina.seltzer@gmail.com directly.';
-            return;
-        }
-        var orig = btn.textContent;
-        btn.textContent = 'Sending...';
-        btn.disabled = true;
-        contactFeedback.className = 'form-feedback';
-
-        fetch(contactForm.action, {
-            method: 'POST',
-            body: new FormData(contactForm),
-            headers: { Accept: 'application/json' }
-        }).then(function (res) {
-            if (res.ok) {
-                contactForm.reset();
-                contactFeedback.className = 'form-feedback success';
-                contactFeedback.textContent = "Message sent - I'll get back to you soon!";
-            } else {
-                throw new Error('error');
+var revealItems = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+if (revealItems.length && 'IntersectionObserver' in window) {
+    var revealObs = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+                entries[i].target.classList.add('visible');
+                revealObs.unobserve(entries[i].target);
             }
-        }).catch(function () {
-            contactFeedback.className = 'form-feedback error';
-            contactFeedback.textContent = 'Something went wrong. Please email terina.seltzer@gmail.com directly.';
-        }).then(function () {
-            btn.textContent = orig;
-            btn.disabled = false;
-        });
-    });
+        }
+    }, { threshold: 0.1 });
+    revealItems.forEach(function (el) { revealObs.observe(el); });
 }
 
 // =====================
-// COPYRIGHT YEAR
+// COUNT-UP ANIMATION
 // =====================
-var yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+var countEls = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+if (countEls.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
+    var countObs = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+            if (!entries[i].isIntersecting) continue;
+            var el = entries[i].target;
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            var suffix = el.getAttribute('data-suffix') || '';
+            var start = 0;
+            var duration = 1200;
+            var startTime = null;
+            countObs.unobserve(el);
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                el.textContent = Math.floor(progress * target) + suffix;
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+    }, { threshold: 0.5 });
+    countEls.forEach(function (el) { countObs.observe(el); });
+}
+
+// =====================
+// SCROLL PROGRESS BAR
+// =====================
+var progressBar = document.getElementById('progress');
+if (progressBar) {
+    window.addEventListener('scroll', function () {
+        var scrollTop    = document.documentElement.scrollTop;
+        var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        progressBar.style.width = pct + '%';
+        progressBar.setAttribute('aria-valuenow', Math.round(pct));
+    }, { passive: true });
+}
 
 // =====================
 // TEXT SIZE CONTROL
@@ -397,65 +412,50 @@ if (sizeSlider && sizeValue) {
         try { localStorage.setItem('textSize', normalized); } catch (e) {}
     });
 }
+
 // =====================
-// CHESS POPUP
+// COPY EMAIL
 // =====================
-var chessBtn   = document.getElementById('chess');
-var chessModal = document.getElementById('chess-modal');
-// NOTE: this id must match the close button's id attribute in index.html.
-// It was renamed from "chess-modal-close" to "chess-modal-id" there, so it has to match here too.
-var chessClose = document.getElementById('chess-modal-id');
+var copyEmailBtn = document.getElementById('copy-email-btn');
+var copyToast    = document.getElementById('copy-toast');
+var toastTimer;
 
-if (chessBtn && chessModal && chessClose) {
-    function openChessModal() {
-        chessModal.hidden = false;
-        chessClose.focus();
-    }
-
-    function closeChessModal() {
-        chessModal.hidden = true;
-        chessBtn.focus();
-    }
-
-    chessBtn.addEventListener('click', openChessModal);
-    chessClose.addEventListener('click', closeChessModal);
-
-    // Close when clicking the dimmed background (but not the box itself)
-    chessModal.addEventListener('click', function (e) {
-        if (e.target === chessModal) closeChessModal();
-    });
-
-    // Close with the Escape key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !chessModal.hidden) closeChessModal();
+if (copyEmailBtn && copyToast) {
+    copyEmailBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText('terina.seltzer@gmail.com').then(function () {
+                clearTimeout(toastTimer);
+                copyToast.classList.add('show');
+                toastTimer = setTimeout(function () { copyToast.classList.remove('show'); }, 2500);
+            }).catch(function () {
+                window.location.href = 'mailto:terina.seltzer@gmail.com';
+            });
+        } else {
+            window.location.href = 'mailto:terina.seltzer@gmail.com';
+        }
     });
 }
 
 // =====================
-// MOBILE NAV TOGGLE
+// BACK TO TOP
 // =====================
-var navToggle = document.getElementById('nav-toggle');
-var primaryNav = document.getElementById('primary-nav');
+var backBtn = document.createElement('button');
+backBtn.id = 'back-to-top';
+backBtn.setAttribute('aria-label', 'Back to top');
+backBtn.textContent = '\u2191';
+document.body.appendChild(backBtn);
 
-if (navToggle && primaryNav) {
-    function setNavOpen(open) {
-        primaryNav.classList.toggle('open', open);
-        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        navToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-        navToggle.innerHTML = open ? '&times;' : '&#9776;';
-    }
+window.addEventListener('scroll', function () {
+    backBtn.classList.toggle('visible', window.scrollY > window.innerHeight * 0.5);
+}, { passive: true });
 
-    navToggle.addEventListener('click', function () {
-        setNavOpen(!primaryNav.classList.contains('open'));
-    });
+backBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+});
 
-    // Close the menu after choosing a section
-    primaryNav.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A') setNavOpen(false);
-    });
-
-    // Close if the window is resized back to desktop width
-    window.addEventListener('resize', function () {
-        if (window.innerWidth > 896 && primaryNav.classList.contains('open')) setNavOpen(false);
-    }, { passive: true });
-}
+// =====================
+// COPYRIGHT YEAR
+// =====================
+var yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
