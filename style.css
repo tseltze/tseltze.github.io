@@ -98,6 +98,10 @@ body {
     color 0.3s ease;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 /* ACCESSIBILITY: keyboard skip link and focus-friendly helpers */
 .skip-link {
   position: absolute;
@@ -818,7 +822,7 @@ section {
   line-height: 1.5;
 }
 
-.project-preview-card figcaption strong {
+.project-preview-card figcaption h3 {
   color: var(--accent);
   font-size: 1rem;
   line-height: 1.25;
@@ -1417,6 +1421,39 @@ footer {
 .card-date,
 .impact-label {
   font-size: calc(var(--user-font-size) * 0.8);
+}
+
+@media (max-width: 48rem) {
+  #home {
+    min-height: auto;
+    padding: 3.5rem 1.25rem 4rem;
+    gap: 2.5rem;
+  }
+
+  #home img {
+    width: 12rem;
+    height: 12rem;
+    outline-width: 0.35rem;
+    outline-offset: 0.4rem;
+    box-shadow:
+      0 0 0 0.75rem var(--bg-card),
+      0 0 0 0.95rem var(--bg-border),
+      0 0.75rem 2rem var(--shadow-dark),
+      0 0 1.5rem var(--accent-glow);
+  }
+
+  .home-content h1 {
+    font-size: clamp(2rem, calc(var(--user-font-size) * 2.25), 2.75rem);
+    line-height: 1.1;
+  }
+
+  .home-content h2 {
+    font-size: clamp(1.25rem, calc(var(--user-font-size) * 1.5), 2rem);
+  }
+
+  .home-content p {
+    font-size: clamp(1rem, calc(var(--user-font-size) * 1.05), 1.2rem);
+  }
 }
 
 /* REDUCED MOTION: keep this last so motion overrides win */

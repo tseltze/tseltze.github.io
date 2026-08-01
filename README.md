@@ -5,8 +5,11 @@ A responsive personal portfolio site for Terina Seltzer, built with plain HTML, 
 ## Project Files
 
 - `index.html` - Main page markup, SEO/Open Graph metadata, content sections, navigation, and contact form.
-- `style.css` - Theme tokens, layout, responsive styles, accessibility helpers, animations, and user text-size styling.
-- `main.js` - Theme switching, scroll progress, section highlighting, typewriter animation, canvas effects, email copy behavior, contact form handling, chess game, and text-size persistence.
+- `style.css` and `chess.css` - Portfolio and chess-game presentation, responsive layout, accessibility helpers, and animations.
+- `main.js` - Theme switching, navigation, scroll effects, contact-form behavior, and accessibility controls.
+- `chess-engine.js` - Testable chess state, movement rules, game-status evaluation, repetition, and snapshots.
+- `chess.js` - Chess user interface and computer-player controller.
+- `tests/chess-engine.test.js` - Automated tests for chess rules and state restoration.
 
 ## Main Features
 
@@ -28,4 +31,12 @@ A responsive personal portfolio site for Terina Seltzer, built with plain HTML, 
 - The text-size slider updates `aria-valuenow` and `aria-valuetext`.
 - Focus-visible styles are included for keyboard navigation.
 
-![alt text](personal-website)
+![Portfolio website screenshot](personal-website.png)
+
+## Tests
+
+Run the chess-engine rule tests with:
+
+```powershell
+node --test --test-isolation=none tests/chess-engine.test.js
+```

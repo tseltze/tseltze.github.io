@@ -50,6 +50,7 @@
     <link rel="stylesheet" href="style.css" type="text/css" />
     <link rel="stylesheet" href="chess.css" type="text/css" />
     <script src="main.js" defer></script>
+    <script src="chess-engine.js" defer></script>
     <script src="chess.js" defer></script>
   </head>
   <body>
@@ -100,7 +101,7 @@
           aria-haspopup="dialog"
           aria-controls="chess-modal"
         >
-          <img src="icons8-chess-64.png" alt="" />
+          <img src="icons8-chess-64.png" alt="" width="64" height="64" />
         </button>
 
         <!-- Light/Dark Toggle -->
@@ -148,6 +149,8 @@
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
         <img
           src="terina.jpg"
+          width="432"
+          height="432"
           alt="Portrait of Terina Seltzer"
           title="Terina Seltzer"
           fetchpriority="high"
@@ -272,12 +275,14 @@
               >
                 <img
                   src="Blockchain.png"
+                  width="1472"
+                  height="750"
                   alt="Veterinary Records: a multi-org blockchain platform on Hyperledger Fabric. Clinics and pet owners share animal records and transfer ownership, with every transaction cryptographically authorized."
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Blockchain Veterinary Records Management</strong>
+              <h3>Blockchain Veterinary Records Management</h3>
               <p>
                 A multi-org blockchain platform on Hyperledger Fabric. Clinics
                 and pet owners share animal records and transfer ownership, with
@@ -320,12 +325,14 @@
               >
                 <img
                   src="task-manager-preview.png"
+                  width="1600"
+                  height="900"
                   alt="Task Manager application preview showing a dark-themed Eisenhower matrix board with color-coded quadrants for urgent and important tasks, save for later, and recurring tasks"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Task Manager</strong>
+              <h3>Task Manager</h3>
               <p>
                 A full-stack productivity application that organizes tasks
                 through a six-quadrant prioritization system. Users can create,
@@ -367,12 +374,14 @@
               >
                 <img
                   src="shepherd-pet-adoption-preview.webp"
+                  width="887"
+                  height="803"
                   alt="Shepherd pet adoption Android application preview showing category buttons for adoptable pets"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Shepherd Pet Adoption</strong>
+              <h3>Shepherd Pet Adoption</h3>
               <p>
                 An Android application designed to help animal rescues manage
                 adoptable pets and volunteer participation from one mobile
@@ -413,12 +422,14 @@
               >
                 <img
                   src="rocking-horses-inventory-preview.png"
+                  width="1902"
+                  height="632"
                   alt="Seltzer's Rocking Horses Inventory System preview showing a Spring Boot inventory table for rocking horse parts"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Seltzer's Rocking Horses Inventory System</strong>
+              <h3>Seltzer's Rocking Horses Inventory System</h3>
               <p>
                 A Java inventory-management application for tracking rocking
                 horse products, in-house parts, and outsourced parts.
@@ -456,12 +467,14 @@
               >
                 <img
                   src="CodingCreations.webp"
+                  width="960"
+                  height="624"
                   alt="Coding Creations website preview showing a screen-free coding worksheets landing page with printable puzzle pages for kids"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Coding Creations</strong>
+              <h3>Coding Creations</h3>
               <p>
                 A Django-based educational website for screen-free coding
                 activities and printable logic worksheets for children.
@@ -498,12 +511,14 @@
               >
                 <img
                   src="world-map-statistics-preview.webp"
+                  width="960"
+                  height="357"
                   alt="World Map and Statistics application preview showing an interactive map and country information panel"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>World Map and Statistics</strong>
+              <h3>World Map and Statistics</h3>
               <p>
                 An interactive data application that retrieves country
                 statistics and presents them through a searchable world map.
@@ -543,12 +558,14 @@
               >
                 <img
                   src="ColorPicker-preview.webp"
+                  width="960"
+                  height="548"
                   alt="Interactive theme-picking Color Design website featuring a bright color wheel and selection of a dark blue color"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>Color Wheel Explorer</strong>
+              <h3>Color Wheel Explorer</h3>
               <p>
                 A browser-based color planning tool that helps users create
                 accessible palettes for websites and applications.
@@ -583,12 +600,14 @@
               <a href="https://github.com/tseltze/West-Virginia-Web" aria-label="View WV Website on GitHub">
                 <img
                   src="west-virginia-website-preview.webp"
+                  width="960"
+                  height="337"
                   alt="West Virginia website preview with navy navigation, dogwood graphics, and informational homepage content"
                   loading="lazy"
               /></a>
             </div>
             <figcaption>
-              <strong>West Virginia Website</strong>
+              <h3>West Virginia Website</h3>
               <p>
                 A multi-page static tourism website for West Virginia, featuring a custom visual identity rooted in Appalachian heritage.
               </p>
@@ -674,7 +693,7 @@
               <span>Node.js</span>
               <span>Express</span>
               <span>Django</span>
-              <span>Rest APIs</span>
+              <span>REST APIs</span>
             </div>
           </div>
 
@@ -988,18 +1007,24 @@
         <div class="cert-images reveal">
           <img
             src="WGU Certificate Front-End Developer.png"
+            width="400"
+            height="400"
             alt="Front-End Developer certificate from WGU"
             title="Front-End Developer certificate"
             loading="lazy"
           />
           <img
             src="WGU Certificate Back-End Developer.png"
+            width="400"
+            height="400"
             alt="Back-End Developer certificate from WGU"
             title="Back-End Developer certificate"
             loading="lazy"
           />
           <img
             src="aws-certified-cloud-practitioner.png"
+            width="330"
+            height="330"
             alt="AWS Certified Cloud Practitioner certificate"
             title="AWS Certified Cloud Practitioner certificate"
             loading="lazy"
@@ -1020,6 +1045,8 @@
               </div>
               <img
                 src="openai-agents-workflows-certificate.webp"
+                width="960"
+                height="674"
                 alt="OpenAI Academy course completion certificate for Agents and Workflows issued to Terina Seltzer"
                 title="OpenAI Academy Agents and Workflows certificate"
                 loading="lazy"
@@ -1033,6 +1060,8 @@
               </div>
               <img
                 src="openai-applied-ai-foundations-certificate.webp"
+                width="960"
+                height="670"
                 alt="OpenAI Academy course completion certificate for Applied AI Foundations issued to Terina Seltzer"
                 title="OpenAI Academy Applied AI Foundations certificate"
                 loading="lazy"
@@ -1044,6 +1073,8 @@
               <div class="learning-course-label">OpenAI: AI Foundations</div>
               <img
                 src="openai-ai-foundations-certificate.webp"
+                width="960"
+                height="667"
                 alt="OpenAI Academy course completion certificate for AI Foundations issued to Terina Seltzer"
                 title="OpenAI Academy AI Foundations certificate"
                 loading="lazy"
@@ -1055,6 +1086,8 @@
               <div class="learning-course-label">Learn JavaScript</div>
               <img
                 src="codecademy-learn-javascript-certificate.png"
+                width="728"
+                height="576"
                 alt="Codecademy certificate of completion for the Learn JavaScript course issued to Terina Seltzer"
                 title="Codecademy Learn JavaScript certificate"
                 loading="lazy"
@@ -1066,6 +1099,8 @@
               <div class="learning-course-label">Learn Bash Scripting</div>
               <img
                 src="codecademy-learn-bash-scripting-certificate.png"
+                width="728"
+                height="576"
                 alt="Codecademy certificate of completion for the Learn Bash Scripting course issued to Terina Seltzer"
                 title="Codecademy Learn Bash Scripting certificate"
                 loading="lazy"
@@ -1077,6 +1112,8 @@
               <div class="learning-course-label">Learn Python 3</div>
               <img
                 src="codecademy-learn-python-3-certificate.png"
+                width="727"
+                height="577"
                 alt="Codecademy certificate of completion for the Learn Python 3 course issued to Terina Seltzer"
                 title="Codecademy Learn Python 3 certificate"
                 loading="lazy"
@@ -1088,6 +1125,8 @@
               <div class="learning-course-label">Learn Kotlin</div>
               <img
                 src="codecademy-learn-kotlin-certificate.png"
+                width="732"
+                height="577"
                 alt="Codecademy certificate of completion for the Learn Kotlin course issued to Terina Seltzer"
                 title="Codecademy Learn Kotlin certificate"
                 loading="lazy"
@@ -1099,7 +1138,9 @@
               <div class="learning-course-label">Learn Lua</div>
               <img
                 src="codecademy-lean-lua-certificate.png"
-                alt="Codecademy certificate of completion for the Lean Lua course issued to Terina Seltzer"
+                width="736"
+                height="567"
+                alt="Codecademy certificate of completion for the Learn Lua course issued to Terina Seltzer"
                 title="Codecademy Learn Lua certificate"
                 loading="lazy"
               />
@@ -1243,7 +1284,7 @@
         >
           &times;
         </button>
-        <div id="turn-indicator">Turn: White</div>
+        <div id="turn-indicator" role="status" aria-live="polite">Turn: White</div>
         <div class="controls">
           <button type="button" id="undo-btn">Undo Move</button>
           <button type="button" id="castle-kingside-btn">
@@ -1267,17 +1308,27 @@
           <div>White Score: <span id="white-score">0</span></div>
           <div>Black Score: <span id="black-score">0</span></div>
         </div>
-        <div id="captured-white"></div>
-        <div id="chess-board"></div>
-        <div id="captured-black"></div>
+        <div id="captured-white" aria-label="Captured white pieces"></div>
+        <div id="chess-board" role="group" aria-label="Chess board"></div>
+        <div id="captured-black" aria-label="Captured black pieces"></div>
       </div>
     </div>
 
     <!-- Chess History -->
-    <div id="history-id">
+    <div
+      id="history-id"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="history-title"
+    >
       <div class="modal-content">
-        <span class="chess-span" id="history-span">&times;</span>
-        <h2>Move History</h2>
+        <button
+          type="button"
+          class="chess-span"
+          id="history-span"
+          aria-label="Close move history"
+        >&times;</button>
+        <h2 id="history-title">Move History</h2>
         <table id="history-table">
           <thead>
             <tr>
@@ -1296,22 +1347,37 @@
     </div>
 
     <!-- Chess Result -->
-    <div id="result-id">
+    <div
+      id="result-id"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="result-text"
+    >
       <div class="modal-content">
-        <span class="chess-span" id="result-span">&times;</span>
+        <button
+          type="button"
+          class="chess-span"
+          id="result-span"
+          aria-label="Close game result"
+        >&times;</button>
         <h2 id="result-text"></h2>
       </div>
     </div>
 
     <!-- Chess Promotion -->
-    <div id="promotion-id">
+    <div
+      id="promotion-id"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="promotion-title"
+    >
       <div class="modal-content">
-        <h3>Select a chess piece to promote</h3>
+        <h3 id="promotion-title">Select a chess piece to promote</h3>
         <div id="promotion-choice"></div>
       </div>
     </div>
 
     <!-- Chess Notifications -->
-    <div id="toast-alert"></div>
+    <div id="toast-alert" role="status" aria-live="polite" aria-atomic="true"></div>
   </body>
 </html>

@@ -14,10 +14,13 @@ if (themeToggle) {
         themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     }
 
-    // Use saved choice, else default to dark regardless of OS preference
+    // Use the saved choice, otherwise follow the operating-system preference.
     var savedTheme = null;
     try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
-    applyTheme(savedTheme || 'dark');
+    var initialTheme = savedTheme || (
+        window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    );
+    applyTheme(initialTheme);
 
     themeToggle.addEventListener('click', function () {
         var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
@@ -111,13 +114,42 @@ var chessModal = document.getElementById('chess-modal');
 var chessClose = document.getElementById('chess-modal-id');
 
 if (chessBtn && chessModal && chessClose) {
+    var secondaryChessDialogs = [
+        document.getElementById('promotion-id'),
+        document.getElementById('history-id'),
+        document.getElementById('result-id')
+    ].filter(Boolean);
+
+    function setPageBehindChessInert(inert) {
+        Array.prototype.forEach.call(document.body.children, function (el) {
+            var keepActive = el === chessModal || secondaryChessDialogs.indexOf(el) !== -1 ||
+                el.id === 'toast-alert' || el.tagName === 'SCRIPT';
+            if (!keepActive) {
+                if (inert) el.setAttribute('inert', '');
+                else el.removeAttribute('inert');
+            }
+        });
+        document.body.classList.toggle('modal-open', inert);
+    }
+
+    function visibleSecondaryDialog() {
+        for (var i = 0; i < secondaryChessDialogs.length; i++) {
+            if (getComputedStyle(secondaryChessDialogs[i]).display !== 'none') {
+                return secondaryChessDialogs[i];
+            }
+        }
+        return null;
+    }
+
     function openChessModal() {
+        setPageBehindChessInert(true);
         chessModal.hidden = false;
         chessClose.focus();
     }
 
     function closeChessModal() {
         chessModal.hidden = true;
+        setPageBehindChessInert(false);
         chessBtn.focus();
     }
 
@@ -129,9 +161,41 @@ if (chessBtn && chessModal && chessClose) {
         if (e.target === chessModal) closeChessModal();
     });
 
-    // Close with the Escape key
+    // Keep keyboard focus inside whichever chess dialog is currently active.
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !chessModal.hidden) closeChessModal();
+        if (chessModal.hidden) return;
+
+        var secondary = visibleSecondaryDialog();
+        if (e.key === 'Escape') {
+            if (secondary && secondary.id === 'history-id') {
+                document.getElementById('history-span').click();
+            } else if (secondary && secondary.id === 'result-id') {
+                document.getElementById('result-span').click();
+            } else if (!secondary) {
+                closeChessModal();
+            }
+            return;
+        }
+
+        if (e.key !== 'Tab') return;
+        var activeDialog = secondary || chessModal.querySelector('.modal-box');
+        var focusable = activeDialog.querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable.length) return;
+
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        } else if (!activeDialog.contains(document.activeElement)) {
+            e.preventDefault();
+            first.focus();
+        }
     });
 }
 

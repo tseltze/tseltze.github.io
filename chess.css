@@ -102,13 +102,13 @@
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   width: 100%;
-  max-width: 600px;
+  max-width: 26rem;
   margin: 0 auto;
   aspect-ratio: 1;
   border: 2px solid var(--bg-border);
   border-radius: 0.25rem;
   overflow: hidden;
-  height: 415px !important;
+  height: auto;
 }
 
 .square {
@@ -116,7 +116,11 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 50px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
 }
 
 .light {
@@ -245,6 +249,9 @@
   right: 12px;
   font-size: 1.5rem;
   color: var(--text-muted);
+  background: transparent;
+  border: 0;
+  line-height: 1;
   cursor: pointer;
   transition: color 0.3s ease;
 }
@@ -267,6 +274,12 @@
   margin: 0.3rem 0.4rem;
   cursor: pointer;
   display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--bg-border);
+  border-radius: 0.35rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1;
   transition: transform 0.15s;
 }
 

@@ -102,10 +102,9 @@ const OPENING_BOOK = {
   ],
 };
 
-class ChessGame {
+class ChessGame extends ChessEngine {
   constructor() {
-    this.cols = ["A", "B", "C", "D", "E", "F", "G", "H"];
-    this.rows = [8, 7, 6, 5, 4, 3, 2, 1];
+    super();
 
     this.unicode = {
       // Unicode chess-piece font/size via CSS.
@@ -117,7 +116,6 @@ class ChessGame {
       king: { white: "♔", black: "♚" },
     };
 
-    this.value = { pawn: 1, knight: 3, bishop: 3, rook: 5, queen: 9, king: 0 };
     this.promotion = null;
     this.enPassant = null;
 
@@ -149,20 +147,17 @@ class ChessGame {
       this.aiTimeoutId = null;
     }
     this.aiThinking = false;
-    this.board = {}; // board only
-    this.history = []; // list of moves
-    this.snapshot = []; // snapshots after each move
+    this.resetState();
+    this.history = [];
+    this.snapshot = [];
     this.captured = { white: [], black: [] };
-    this.currentTurn = "white";
-    this.enPassant = null;
-    this.halfMoveClock = 0; // half-moves since the last capture or pawn move 
-    this.positionCounts = new Map(); // how many times each position has occurred 
-    this.searchTT = new Map(); // transposition table used during the bot's search 
+    this.searchTT = new Map();
 
-    this.takeSnapshot(); // Takes a snapshot you can undo
-    this.createBoard(); // Build the 64 empty <div> squareuares
+    this.createBoard(); // Build the 64 empty square buttons
     this.resetPieces(); // fill this.board with the starting position
-    this.drawPieces(); // draw pieces onto the squareuares we just built
+    this.recordPosition();
+    this.takeSnapshot();
+    this.drawPieces(); // draw pieces onto the squares we just built
     this.bindEvents(); // wire up all the buttons/board clicks
     this.updateTurn();
     this.updateScores();
@@ -176,7 +171,7 @@ class ChessGame {
 
     // e.target is whatever exact element was clicked 
     const square = e.target.closest(".square");
-    if (!square) return; // click landed somewhere that isn't part of a squareuare at all
+    if (!square) return; // click landed somewhere that isn't part of a square at all
     const cell = square.dataset.cell;
     // Is there already a piece selected from a previous click? (CSS
     // class 'selected' is added/removed below and in bindEvents'
@@ -187,9 +182,7 @@ class ChessGame {
       // --- This is the SECOND click: attempt to move to `cell` ---
       const from = sel.dataset.cell;
       // Recompute legal moves for the selected piece
-      const legal = this.possibleMoves(from).filter(
-        (d) => !this.ifMove(from, d),
-      );
+      const legal = this.legalMovesFrom(from);
 
       if (legal.includes(cell)) this.makeMove(from, cell);
       else this.showToast("Invalid move!", "error");
@@ -198,13 +191,14 @@ class ChessGame {
       // selection/highlight state
       document
         .querySelectorAll(".selected,.move-highlight,.capture-highlight")
-        .forEach((el) =>
+        .forEach((el) => {
           el.classList.remove(
             "selected",
             "move-highlight",
             "capture-highlight",
-          ),
-        );
+          );
+          el.setAttribute("aria-pressed", "false");
+        });
       return;
     }
 
@@ -214,12 +208,11 @@ class ChessGame {
     // currently is.
     if (piece && piece.color === this.currentTurn) {
       square.classList.add("selected");
+      square.setAttribute("aria-pressed", "true");
       // Highlight every legal destination for this piece: a
       // 'capture-highlight' if an enemy piece is sitting there, or a
-      // plain 'move-highlight' otherwise. purly visible
-      this.possibleMoves(cell)
-        .filter((d) => !this.ifMove(cell, d))
-        .forEach((d) => {
+      // plain 'move-highlight' otherwise. purely visible
+      this.legalMovesFrom(cell).forEach((d) => {
           const tgt = document.querySelector(`.square[data-cell="${d}"]`);
           tgt.classList.add(
             this.board[d] ? "capture-highlight" : "move-highlight",
@@ -281,7 +274,14 @@ class ChessGame {
 
     if (moving.type === "pawn" && (to[1] === "8" || to[1] === "1")) {
       this.board[to] = { ...moving, hasMoved: true };
-      this.promotion = { cell: to, color: moving.color };
+      this.promotion = {
+        cell: to,
+        from,
+        to,
+        color: moving.color,
+        piece: moving,
+        capturedPiece: target,
+      };
       this.promptPromotion();
       return;
     }
@@ -307,39 +307,39 @@ class ChessGame {
     options.innerHTML = ""; // clear any leftover options from a previous promotion
 
     const { color } = this.promotion;
-    const pool = this.captured[color];
-    let types = [...new Set(pool.map((p) => p.type))];
-    if (!types.length) types = ["queen", "rook", "bishop", "knight"];
+    const types = this.promotionOptions();
 
     types.forEach((type) => {
-      const btn = document.createElement("div");
+      const btn = document.createElement("button");
+      btn.type = "button";
       btn.className = "promotion-option";
       btn.textContent = this.unicode[type][color];
       btn.title = type.charAt(0).toUpperCase() + type.slice(1); // e.g. "Queen" tooltip
+      btn.setAttribute("aria-label", `Promote to ${type}`);
       btn.addEventListener("click", () => this.promotePawn(type));
       options.appendChild(btn);
     });
 
     modal.style.display = "flex";
+    document.getElementById("chess-modal").setAttribute("inert", "");
+    options.querySelector("button").focus();
   }
 
   // =====================
   // PROMOTE PAWN
   // =====================
   promotePawn(type) {
-    const { cell, color } = this.promotion;
+    const { cell, color, from, to, piece, capturedPiece } = this.promotion;
 
-    const idx = this.captured[color].findIndex((p) => p.type === type);
-    if (idx !== -1) this.captured[color].splice(idx, 1);
-
-    // Replace the pawn sitting on `cell` with a brand new piece of
-    // the chosen type.
-    this.board[cell] = { type, color, hasMoved: true };
+    // Replace the pawn sitting on `cell` with the selected promotion piece.
+    this.board[cell] = this.promote(type, color);
     this.promotion = null;
     // The promotion popup's div is id="promotion-id" in index.html.
     document.getElementById("promotion-id").style.display = "none";
+    document.getElementById("chess-modal").removeAttribute("inert");
+    document.querySelector(`.square[data-cell="${to}"]`).focus();
 
-    this.finishMove(cell, cell, this.board[cell]);
+    this.finishMove(from, to, piece, capturedPiece);
   }
 
   // =====================
@@ -411,6 +411,7 @@ class ChessGame {
     // This duplicates the turn-switching / re-drawPieces / update parts of
     // finishMove() inline, rather than calling finishMove() itself --
     this.currentTurn = isWhite ? "black" : "white";
+    this.recordPosition();
     this.takeSnapshot();
     this.drawPieces();
     this.updateTurn();
@@ -439,6 +440,7 @@ class ChessGame {
 
     // Hand the turn over to the other player.
     this.currentTurn = this.currentTurn === "white" ? "black" : "white";
+    this.recordPosition();
 
     this.takeSnapshot(); // snapshot for Undo
     this.drawPieces();
@@ -454,49 +456,23 @@ class ChessGame {
   // CHECK GAME END
   // =====================
   checkGameEnd() {
+    const status = this.getGameStatus();
 
-    const anyLegal = Object.keys(this.board).some((cell) => {
-      const p = this.board[cell];
-      if (p.color !== this.currentTurn) return false;
-      return (
-        this.possibleMoves(cell).filter((d) => !this.ifMove(cell, d)).length > 0
-      );
-    });
-    const inCheckNow = this.inCheck(this.currentTurn);
-
-    if (inCheckNow && !anyLegal) {
-      // Checkmate = in check AND no legal moves exist to escape it.
-      this.endGame(
-        `${this.currentTurn === "white" ? "Black" : "White"} wins by Check Mate!`,
-      );
-      return;
-    }
-    if (!inCheckNow && !anyLegal) {
-      // Stalemate: not in check, but nothing legal to play -- a draw.
-      this.endGame("Draw by Stalemate!");
-      return;
-    }
-    if (this.hasInsufficientMaterial()) {
-      this.endGame("Draw by Insufficient Material!");
-      return;
-    }
-    // Fifty-move rule: 50 full moves (100 half-moves) with no capture
-    // and no pawn move means neither side is making progress.
-    if (this.halfMoveClock >= 100) {
-      this.endGame("Draw by the Fifty-Move Rule!");
-      return;
-    }
-   
-    if (this.recordPosition() >= 3) {
-      this.endGame("Draw by Threefold Repetition!");
+    if (status.type === "active" || status.type === "check") {
+      if (this.currentTurn === this.aiColor) this.scheduleBotMove();
       return;
     }
 
-    if (this.currentTurn === this.aiColor) {
-      // It's now the computer's turn (and the game isn't over) -- queue
-      // up its move instead of waiting on a human click.
-      this.scheduleBotMove();
-    }
+    const messages = {
+      stalemate: "Draw by Stalemate!",
+      "insufficient-material": "Draw by Insufficient Material!",
+      "fifty-move": "Draw by the Fifty-Move Rule!",
+      "threefold-repetition": "Draw by Threefold Repetition!",
+    };
+    const message = status.type === "checkmate"
+      ? `${status.winner === "white" ? "White" : "Black"} wins by Checkmate!`
+      : messages[status.type];
+    this.endGame(message);
   }
 
   // =====================
@@ -510,6 +486,8 @@ class ChessGame {
     }
     document.getElementById("result-text").textContent = message;
     document.getElementById("result-id").style.display = "flex";
+    document.getElementById("chess-modal").setAttribute("inert", "");
+    document.getElementById("result-span").focus();
   }
 
   // =====================
@@ -524,12 +502,11 @@ class ChessGame {
       this.aiThinking = false;
     }
 
-    this.deleteSnapshot(); // undoes a single half-move (usually the computer's reply)
+    if (!this.deleteSnapshot()) return;
 
-    if (this.currentTurn === this.aiColor) {
-      this.takeSnapshot();
-      this.deleteSnapshot();
-    }
+    // When the computer has already replied, also undo the human move so
+    // control returns to the same side that initiated Undo.
+    if (this.currentTurn === this.aiColor) this.deleteSnapshot();
     this.updateTurn();
   }
 
@@ -868,243 +845,6 @@ class ChessGame {
   }
 
   // =====================
-  // POSSIBLE MOVES
-  // =====================
-  possibleMoves(from) {
-    const p = this.board[from];
-    if (!p) return []; // no piece on that square -> no moves
-    const f = from.charCodeAt(0); 
-    const r = +from[1]; // rank as a number
-   
-    const dir = p.color === "white" ? 1 : -1;
-    const moves = [];
-    // Pawns move in opposite directions depending on color: White
-    // moves toward higher rank numbers (+1), Black toward lower ones
-    // (-1).
-    const push = (cf, cr) => {
-      const cell = String.fromCharCode(cf) + cr;
-      // push(cf, cr) is a small helper used by every "sliding" or
-      // "stepping" piece below. Given a candidate file and rank, it:
-      //   1. converts them back into a square name like "E4"
-      //   2. bails out if that square is off the board
-      //   3. bails out if it's occupied by a piece of the SAME color
-      // Its return value is used by the sliding pieces to decide whether
-      // to keep sliding further in that direction: it returns `true` only
-      // when the square was empty and `false` both when the square is
-      // off-board AND when it's occupied
-      if (!/^[A-H][1-8]$/.test(cell)) return false;
-      const occ = this.board[cell];
-      if (occ && occ.color === p.color) return false; // blocked by own piece
-      moves.push(cell);
-      return !occ; // true = square was empty, so sliding pieces may continue past it
-    }; // Regex check that `cell` is a real square, e.g. "E4" -- this
-    // is what catches attempts to move off the edge of the board
-    // (file before A / after H, or rank below 1 / above 8).
-    switch (p.type) {
-      case "pawn":
-        {
-          // Pawns are the one piece type where "can move there" and
-          // "can capture there" are DIFFERENT rules
-          // --- Forward movement (no capturing straight ahead) ---
-          const one = String.fromCharCode(f) + (r + dir);
-          if (!this.board[one]) {
-            moves.push(one);
-            if (!p.hasMoved) {
-              const two = String.fromCharCode(f) + (r + 2 * dir);
-              if (!this.board[two]) moves.push(two);
-            }
-          } // First move only: allowed to advance two squares, but only
-          // if BOTH the one-square and two-square destinations are empty
-          [-1, 1].forEach((df) => {
-            const cap = String.fromCharCode(f + df) + (r + dir);
-            if (this.board[cap] && this.board[cap].color !== p.color)
-              moves.push(cap);
-          }); // --- Diagonal captures ---
-          // A pawn can move one square diagonally forward ONLY if
-          // there's an enemy piece there
-          if (this.enPassant) {
-            [-1, 1].forEach((df) => {
-              const ep = String.fromCharCode(f + df) + (r + dir);
-              if (ep === this.enPassant.target) moves.push(ep);
-            });
-          }
-        }
-        break;
-      // En passant is a special one-time capture: if an enemy pawn
-      // JUST advanced two squares on the previous move (landing
-      // right beside this pawn), this pawn may capture it "as it
-      // passes", moving diagonally into the square the enemy pawn
-      // skipped over
-      case "knight":
-        // All 8 possible "L-shaped" knight jumps, as [file-offset,
-        // rank-offset] pairs.
-        [
-          [1, 2],
-          [2, 1],
-          [2, -1],
-          [1, -2],
-          [-1, -2],
-          [-2, -1],
-          [-2, 1],
-          [-1, 2],
-        ].forEach(([df, dr]) => push(f + df, r + dr));
-        break;
-
-      case "bishop":
-        // The 4 diagonal directions. For each one, keep stepping
-        // further away (i = 1, 2, 3, ... up to 7 squares) and calling
-        // push() at each step; push()'s return value tells us to
-        // `break` out of the inner loop as soon as we hit an occupied
-        // square
-        [
-          [1, 1],
-          [1, -1],
-          [-1, 1],
-          [-1, -1],
-        ].forEach(([df, dr]) => {
-          for (let i = 1; i < 8; i++) if (!push(f + df * i, r + dr * i)) break;
-        });
-        break;
-
-      case "rook":
-        // The 4 straight (horizontal/vertical) directions, same
-        // sliding pattern as the bishop
-        [
-          [1, 0],
-          [-1, 0],
-          [0, 1],
-          [0, -1],
-        ].forEach(([df, dr]) => {
-          for (let i = 1; i < 8; i++) if (!push(f + df * i, r + dr * i)) break;
-        });
-        break;
-
-      case "queen":
-        // A queen simply moves like a bishop AND a rook combined
-        [
-          [1, 0],
-          [-1, 0],
-          [0, 1],
-          [0, -1],
-          [1, 1],
-          [1, -1],
-          [-1, 1],
-          [-1, -1],
-        ].forEach(([df, dr]) => {
-          for (let i = 1; i < 8; i++) if (!push(f + df * i, r + dr * i)) break;
-        });
-        break;
-
-      case "king":
-        // Same 8 directions as the queen, but only a single step in each
-        [
-          [1, 0],
-          [-1, 0],
-          [0, 1],
-          [0, -1],
-          [1, 1],
-          [1, -1],
-          [-1, 1],
-          [-1, -1],
-        ].forEach(([df, dr]) => push(f + df, r + dr));
-        break;
-    }
-    return moves;
-  }
-
-  // =====================
-  // SIMULATE MOVE (CHECK SAFETY)
-  // =====================
-  ifMove(from, to) {
-    const moving = this.board[from];
-    const dst = this.board[to]; // whatever (if anything) is currently on the
-    let enPassantCell = null, // destination square
-      epPiece = null;
-
-    if (
-      moving.type === "pawn" &&
-      !dst &&
-      this.enPassant &&
-      this.enPassant.target === to
-    ) {
-      enPassantCell = this.enPassant.capture;
-      epPiece = this.board[enPassantCell];
-      delete this.board[enPassantCell];
-    }
-
-    // --- Perform the move ---
-    delete this.board[from];
-    this.board[to] = moving;
-
-    // --- Check whether the mover's own king is now in check ---
-    const inCheck = this.inCheck(moving.color);
-
-    // --- Undo the move, restoring the board exactly as it was ---
-    delete this.board[to];
-    this.board[from] = moving;
-    if (dst) this.board[to] = dst; // put back whatever was captured normally...
-    if (enPassantCell) this.board[enPassantCell] = epPiece; // ...or the en passant victim,
-    return inCheck;
-  }
-
-  // =====================
-  // IN CHECK
-  // =====================
-  // inCheck: Is the given color's king currently under attack?
-  inCheck(color) {
-    let king = "";
-    for (const cell in this.board) {
-      const p = this.board[cell];
-      if (p.type === "king" && p.color === color) {
-        king = cell;
-        break;
-      } /* find king */
-    } // Scan every occupied square looking for this color's king.
-    for (const cell in this.board) {
-      const p = this.board[cell];
-      if (p.color !== color && this.possibleMoves(cell).includes(king))
-        return true;
-    }
-    return false;
-  }
-
-  // =====================
-  // CAN CASTLE
-  // =====================
-  canCastle(color, side) {
-    const rank = color === "white" ? "1" : "8";
-    const kingFrom = "E" + rank;
-    const rookFrom = side === "king" ? "H" + rank : "A" + rank;
-    const king = this.board[kingFrom];
-    const rook = this.board[rookFrom];
-    if (!king || king.type !== "king" || king.hasMoved) return false;
-    if (!rook || rook.type !== "rook" || rook.hasMoved) return false;
-
-    const emptyPath =
-      side === "king"
-        ? ["F" + rank, "G" + rank]
-        : ["D" + rank, "C" + rank, "B" + rank];
-    if (emptyPath.some((square) => this.board[square])) return false;
-
-    // The squares the king actually travels across (its start square
-    // plus every square up to and including where it lands) must all
-    // be safe -- castling is not allowed out of, through, or into
-    // check.
-    const kingPath =
-      side === "king"
-        ? ["E" + rank, "F" + rank, "G" + rank]
-        : ["E" + rank, "D" + rank, "C" + rank];
-    const opponent = color === "white" ? "black" : "white";
-    return !kingPath.some((square) =>
-      Object.keys(this.board).some(
-        (cell) =>
-          this.board[cell].color === opponent &&
-          this.possibleMoves(cell).includes(square),
-      ),
-    );
-  }
-
-  // =====================
   // APPLY SEARCH MOVE
   // =====================
   applySearchMove(move) {
@@ -1208,103 +948,28 @@ class ChessGame {
   }
 
   // =====================
-  // INSUFFICIENT MATERIAL CHECK
-  // =====================
-  // True when neither side has enough material left on the board to ever force a
-  // checkmate which is an automatic draw under the standard chess rules 
-  hasInsufficientMaterial() {
-    const pieces = Object.values(this.board).filter((p) => p.type !== "king");
-    if (pieces.length === 0) return true; // king vs king
-    if (
-      pieces.length === 1 &&
-      (pieces[0].type === "bishop" || pieces[0].type === "knight")
-    ) {
-      return true; // king+minor vs king
-    }
-    if (
-      pieces.length === 2 &&
-      pieces.every((p) => p.type === "bishop" || p.type === "knight")
-    ) {
-      return true; // king+minor vs king+minor (a simplification: a real
-      // engine would also check same-colored bishops here, but two
-      // minor pieces are extremely unlikely to force mate regardless)
-    }
-    return false;
-  }
-
-  // =====================
-  // SEARCH KEY
-  // =====================
-  searchKey(color) {
-    const boardPart = Object.keys(this.board)
-      .sort()
-      .map(
-        (cell) =>
-          `${cell}${this.board[cell].color[0]}${this.board[cell].type[0]}`,
-      )
-      .join(",");
-    const rights = ["white", "black"]
-      .map((c) => {
-        const rank = c === "white" ? "1" : "8";
-        const king = this.board["E" + rank];
-        const kingOk = king && king.type === "king" && !king.hasMoved;
-        const kRook = this.board["H" + rank];
-        const qRook = this.board["A" + rank];
-        return (
-          (kingOk && kRook && kRook.type === "rook" && !kRook.hasMoved
-            ? "K"
-            : "") +
-          (kingOk && qRook && qRook.type === "rook" && !qRook.hasMoved
-            ? "Q"
-            : "")
-        );
-      })
-      .join("|");
-    const ep = this.enPassant ? this.enPassant.target : "-";
-    return `${boardPart}_${color}_${rights}_${ep}`;
-  }
-
-  // =====================
-  // POSITION KEY
-  // =====================
-  // positionKey(): searchKey() for whoever's ACTUALLY up next on the
-  // real board right now -- used for threefold-repetition tracking.
-  positionKey() {
-    return this.searchKey(this.currentTurn);
-  }
-
-  // =====================
-  // RECORD POSITION
-  // =====================
-  // recordPosition(): records the current position (see positionKey()
-  // above) as having occurred once more, and returns the new total
-  // count for that exact position.
-  recordPosition() {
-    const key = this.positionKey();
-    const count = (this.positionCounts.get(key) || 0) + 1;
-    this.positionCounts.set(key, count);
-    return count;
-  }
-
-  // =====================
   // CREATE BOARD
   // =====================
   createBoard() {
     const boardEl = document.getElementById("chess-board");
     boardEl.innerHTML = ""; // clear board
+    boardEl.setAttribute("aria-label", "Chess board");
 
     for (const r of this.rows) {
       for (const c of this.cols) {
         const cell = `${c}${r}`; // e.g. "E4"
-        const square = document.createElement("div");
+        const square = document.createElement("button");
+        square.type = "button";
         const light = (this.cols.indexOf(c) + this.rows.indexOf(r)) % 2 === 0;
         square.className = `square ${light ? "light" : "dark"}`; // rows alt light/dark
         square.dataset.cell = cell;
-        // cell is how we tag each square <div> with its chess
+        square.setAttribute("aria-label", `${cell}: empty`);
+        square.setAttribute("aria-pressed", "false");
+        // cell is how we tag each square button with its chess
         // coordinate so later code can find "the square named E4"
         // via document.querySelector('.square[data-cell="E4"]'), and
         // so click handlers can read e.target.closest('.square')
-        // .dataset.cell to find out which squareuare was clicked
+        // .dataset.cell to find out which square was clicked
         const note = document.createElement("div");
         note.className = "notation";
         note.textContent = cell;
@@ -1338,7 +1003,7 @@ class ChessGame {
     } // read piece type out of index
     // hasMoved:false info: castling requires that neither the king nor the
     //  rook has ever moved and a pawn's very first move is allowed to be
-    // two squareuares instead of one
+    // two squares instead of one
   }
 
   // =====================
@@ -1348,6 +1013,8 @@ class ChessGame {
   drawPieces() {
     document.querySelectorAll(".square").forEach((square) => {
       square.innerHTML = "";
+      square.setAttribute("aria-label", `${square.dataset.cell}: empty`);
+      square.setAttribute("aria-pressed", "false");
       const note = document.createElement("div");
       note.className = "notation";
       note.textContent = square.dataset.cell;
@@ -1362,10 +1029,11 @@ class ChessGame {
       el.className = "piece";
       el.textContent = this.unicode[p.type][p.color];
       // Step 2: for every square that currently has a piece on it
-      // find the matching squareuare and add a piece showing the right glyph.
+      // find the matching square and add a piece showing the right glyph.
       el.dataset.cell = cell;
       el.dataset.type = p.type;
       el.dataset.color = p.color;
+      square.setAttribute("aria-label", `${cell}: ${p.color} ${p.type}`);
       square.appendChild(el);
     }
     ["white", "black"].forEach((color) => {
@@ -1421,10 +1089,14 @@ class ChessGame {
     document.getElementById("history-span").addEventListener("click", () => {
       // The "x" that closes the Move History popup
       document.getElementById("history-id").style.display = "none";
+      document.getElementById("chess-modal").removeAttribute("inert");
+      document.getElementById("history-btn").focus();
     });
     document.getElementById("result-span").addEventListener("click", () => {
       document.getElementById("result-id").style.display = "none";
+      document.getElementById("chess-modal").removeAttribute("inert");
       this.init();
+      document.getElementById("chess-modal-id").focus();
     }); // The "x" that closes the "you won/lost" checkmate popup.
   }
 
@@ -1447,34 +1119,27 @@ class ChessGame {
   takeSnapshot() {
     // takeSnapshot() / deleteSnapshot() together implement Undo.
     this.snapshot.push({
-      board: JSON.parse(JSON.stringify(this.board)), // JSON.parse(JSON.stringify(x)) is a common way to
-      history: JSON.parse(JSON.stringify(this.history)), // deep-clone a plain object/array in JavaScript.
+      ...this.exportState(),
+      history: JSON.parse(JSON.stringify(this.history)),
       captured: JSON.parse(JSON.stringify(this.captured)),
-      currentTurn: this.currentTurn,
-      enPassant: this.enPassant ? { ...this.enPassant } : null, // enPassant is either null or a small object;
-      halfMoveClock: this.halfMoveClock, // ...and the two pieces of state the draw-detection
-      positionCounts: Array.from(this.positionCounts.entries()), // logic in checkGameEnd() needs restored on undo too --
-    }); // a Map isn't JSON-cloneable, so it's saved as a plain array of [key, count] pairs instead.
+    });
   }
 
   // =====================
   // DELETE SNAPSHOT (UNDO)
   // =====================
   deleteSnapshot() {
-    if (this.snapshot.length < 2) return; // We keep at least one snapshot
-    this.snapshot.pop(); // To undo, we throw one away
-    const prev = this.snapshot.pop(); //and look at the new last entry
-    this.board = prev.board;
+    if (this.snapshot.length < 2) return false;
+    this.snapshot.pop();
+    const prev = this.snapshot[this.snapshot.length - 1];
+    this.restoreState(prev);
     this.history = prev.history;
     this.captured = prev.captured;
-    this.currentTurn = prev.currentTurn;
-    this.enPassant = prev.enPassant;
-    this.halfMoveClock = prev.halfMoveClock || 0;
-    this.positionCounts = new Map(prev.positionCounts || []);
 
     this.drawPieces();
     this.updateTurn();
     this.updateScores();
+    return true;
   }
 
   // =====================
@@ -1494,6 +1159,8 @@ class ChessGame {
       )
       .join("");
     document.getElementById("history-id").style.display = "flex";
+    document.getElementById("chess-modal").setAttribute("inert", "");
+    document.getElementById("history-span").focus();
   } // This code builds one big HTML string of <tr> rows (one
   // per move) and sets it as the table body's contents
 
@@ -1504,9 +1171,9 @@ class ChessGame {
     let txt = `Turn: ${this.currentTurn.charAt(0).toUpperCase() + this.currentTurn.slice(1)}`;
     if (this.currentTurn === this.aiColor && this.aiThinking)
       txt += " (thinking...)";
-    if (this.inCheck(this.currentTurn)) txt += " (Check Mate!)";
+    if (this.inCheck(this.currentTurn)) txt += " (Check!)";
     document.getElementById("turn-indicator").textContent = txt;
-  } // Refreshes the Turn text above the board, appending Check Mate if user is in check
+  } // Refreshes the turn text above the board, including check status
 
   // =====================
   // UPDATE SCORES
@@ -1518,7 +1185,7 @@ class ChessGame {
     );
     document.getElementById("black-score").textContent = sum(
       this.captured.black,
-    ); // Recompues each side's total pieces using valueMap. The calculation is White's capured pieces,
+    ); // Recomputes each side's total pieces using valueMap. The calculation is White's captured pieces,
     // which also sums up Black's total
   }
 }
