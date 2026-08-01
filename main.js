@@ -183,12 +183,12 @@ if (contactForm && contactFeedback) {
 var typeEl = document.getElementById('typewriter-text');
 if (typeEl) {
     var roles = [
-        'Software Developer',
-        'Full Stack Engineer',
-        'Open Source Enthusiast',
-        'Passionate Developer',
-        'Always Learning',
-        'Problem Solver'
+        'Software Engineer',
+        'Full Stack Developer',
+        'Android Developer',
+        'Java Developer',
+        'Systems Administrator',
+        'Database Developer'
     ];
 
     if (prefersReducedMotion) {
