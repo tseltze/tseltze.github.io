@@ -812,6 +812,15 @@ section {
   background: linear-gradient(180deg, hsla(0, 0%, 100%, 0), var(--bg-card) 84%);
 }
 
+.project-highlights {
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.project-highlights li {
+  margin-bottom: 0.4rem;
+}
+
 /* =================
    EXPERIENCE SECTION
    ================= */
