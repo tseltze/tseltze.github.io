@@ -265,6 +265,32 @@
         </p>
       </div>
 
+           <!-- Project 0 -->
+      <div class="projects-grid">
+        <figure class="project-preview-card reveal">
+          <div class="project-preview-image">
+            <a href="https://github.com/tseltze/Blockchain_Veterinary_Records_Management">
+              <img
+                src="Blockchain.png"
+                alt="Veterinary Records: a multi-org blockchain platform on Hyperledger Fabric. Clinics and pet owners share animal records and transfer ownership, with every transaction cryptographically authorized."
+                loading="lazy"
+            /></a>
+          </div>
+          <figcaption>
+            <strong>Blockchain Veterinary Records Management</strong>
+            <p>A multi-org blockchain platform on Hyperledger Fabric. Clinics and pet owners share animal records and transfer ownership, with every transaction cryptographically authorized.</p>
+            <p><strong>Technologies:</strong> Java/Spring Boot REST API on Hyperledger Fabric, with H2, Spring Security, Prometheus/Grafana, Docker, and a vanilla JS frontend.</p>
+            <p><strong>Highlights:</strong></p>
+            <ul class="project-highlights">
+              <li>Eliminated a single point of failure: migrated to a 3-node Raft cluster, verified via live leader failover.</li>
+              <li>Closed an authorization gap letting owners access others' records; added per-identity access control.</li>
+              <li>Fixed a scaling defect with lazy, database-backed connection lookups; proven across two live instances.</li>
+              <li>Built a 50+ test offline suite covering authorization and error handling, no live network required.</li>
+              <li>Added observability: health checks on real blockchain connectivity, metrics, and structured logging.</li>
+            </ul>
+          </figcaption>
+        </figure>
+
       <!-- Project 1 -->
       <div class="projects-grid">
         <figure class="project-preview-card reveal">
