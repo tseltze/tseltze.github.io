@@ -126,7 +126,8 @@ class ChessGame extends ChessEngine {
 
     this.difficulty = "medium"; 
 
-    this.init(); // makes new game and initializes click listeners
+    this.init();
+    this.bindEvents(); // wire up the controls once; init() can safely reset in place
   }
 
   // =====================
@@ -158,7 +159,6 @@ class ChessGame extends ChessEngine {
     this.recordPosition();
     this.takeSnapshot();
     this.drawPieces(); // draw pieces onto the squares we just built
-    this.bindEvents(); // wire up all the buttons/board clicks
     this.updateTurn();
     this.updateScores();
   }
@@ -1064,7 +1064,10 @@ class ChessGame extends ChessEngine {
     // figures out which square was actually clicked
     document
       .getElementById("reset-btn")
-      .addEventListener("click", () => window.location.reload());
+      .addEventListener("click", () => {
+        this.init();
+        document.getElementById("reset-btn").focus();
+      });
 
     document
       .getElementById("history-btn")
@@ -1085,7 +1088,6 @@ class ChessGame extends ChessEngine {
         this.setDifficulty(e.target.value),
       );
     }
-    // Reset just reloads the whole page rather than trying to reset in-place
     document.getElementById("history-span").addEventListener("click", () => {
       // The "x" that closes the Move History popup
       document.getElementById("history-id").style.display = "none";
