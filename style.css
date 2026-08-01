@@ -360,7 +360,9 @@ header a.active {
 }
 
 #chess img {
-  width: 75%;
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
 }
 /* =====================
    GENERAL SECTION RULES
