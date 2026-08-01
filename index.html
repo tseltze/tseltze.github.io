@@ -1271,7 +1271,7 @@
     <!-- CHESS POPUP -->
     <div id="chess-modal" class="modal-overlay" hidden>
       <div
-        class="modal-box"
+        class="modal-box modal-surface"
         role="dialog"
         aria-modal="true"
         aria-label="Chess Game"
@@ -1317,14 +1317,15 @@
     <!-- Chess History -->
     <div
       id="history-id"
+      class="modal-overlay chess-subdialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="history-title"
     >
-      <div class="modal-content">
+      <div class="modal-content modal-surface">
         <button
           type="button"
-          class="chess-span"
+          class="modal-close"
           id="history-span"
           aria-label="Close move history"
         >&times;</button>
@@ -1349,14 +1350,15 @@
     <!-- Chess Result -->
     <div
       id="result-id"
+      class="modal-overlay chess-subdialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="result-text"
     >
-      <div class="modal-content">
+      <div class="modal-content modal-surface">
         <button
           type="button"
-          class="chess-span"
+          class="modal-close"
           id="result-span"
           aria-label="Close game result"
         >&times;</button>
@@ -1367,11 +1369,12 @@
     <!-- Chess Promotion -->
     <div
       id="promotion-id"
+      class="modal-overlay chess-subdialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="promotion-title"
     >
-      <div class="modal-content">
+      <div class="modal-content modal-surface">
         <h3 id="promotion-title">Select a chess piece to promote</h3>
         <div id="promotion-choice"></div>
       </div>

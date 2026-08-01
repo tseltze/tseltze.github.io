@@ -195,7 +195,8 @@
 }
 
 @keyframes fade-in-out {
-  0% {
+  0%,
+  100% {
     opacity: 0;
     transform: translateY(20px);
   }
@@ -209,56 +210,19 @@
     opacity: 1;
   }
 
-  100% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
 }
 
-#history-id,
-#result-id,
-#promotion-id {
+.chess-subdialog {
   display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
 }
 
 .modal-content {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border: 0.063rem solid var(--bg-border);
   padding: 1rem;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   width: 90%;
   max-width: 500px;
   max-height: 80%;
   overflow-y: auto;
-  position: relative;
-}
-
-.chess-span {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  background: transparent;
-  border: 0;
-  line-height: 1;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.chess-span:hover {
-  color: var(--accent);
 }
 
 #promotion-id .modal-content {
