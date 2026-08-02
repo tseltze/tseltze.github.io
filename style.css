@@ -832,6 +832,17 @@ section {
 /* =================
    EXPERIENCE SECTION
    ================= */
+.experience-group-title {
+  max-width: 50rem;
+  margin: 2.5rem auto 1rem;
+  color: var(--accent);
+  font-size: 1.3rem;
+}
+
+.section-intro + .experience-group-title {
+  margin-top: 0;
+}
+
 .jobs-grid {
   display: flex;
   flex-direction: column;
@@ -847,7 +858,7 @@ section {
   gap: 0.4rem;
 }
 
-.jobs-card h3 {
+.jobs-card .job-title {
   color: var(--accent);
   font-size: 1.2rem;
   font-weight: 700;
@@ -1349,7 +1360,10 @@ footer {
 .skills-card h3 {
   font-size: calc(var(--user-font-size) * 1.25);
 }
-.jobs-card h3,
+.experience-group-title {
+  font-size: calc(var(--user-font-size) * 1.3);
+}
+.jobs-card .job-title,
 .online-learning h3,
 .edu-card h3 {
   font-size: calc(var(--user-font-size) * 1.2);

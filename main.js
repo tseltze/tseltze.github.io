@@ -248,11 +248,8 @@ var typeEl = document.getElementById('typewriter-text');
 if (typeEl) {
     var roles = [
         'Software Engineer',
-        'Full Stack Developer',
-        'Android Developer',
-        'Java Developer',
-        'Systems Administrator',
-        'Database Developer'
+        'Full-Stack Developer',
+        'Java & Android Developer'
     ];
 
     if (prefersReducedMotion) {
